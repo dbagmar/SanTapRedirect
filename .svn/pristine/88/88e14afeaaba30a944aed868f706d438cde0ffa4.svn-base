@@ -1,0 +1,28 @@
+//
+//  MessagesViewController.swift
+//  TecladoiMessage
+//
+//  Created by Darshan Bagmar on 19/05/20.
+//  Copyright © 2020 IDmission. All rights reserved.
+//
+
+import UIKit
+import Messages
+import SantanderTapPod
+
+class MessagesViewController: MessagesParentViewController {
+   
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+    }
+    
+    
+}
+
+
+

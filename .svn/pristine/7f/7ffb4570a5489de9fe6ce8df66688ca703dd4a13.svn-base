@@ -1,0 +1,842 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 51;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		751CA99D2441A55600BCD2E7 /* URLRedirectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751CA99C2441A55600BCD2E7 /* URLRedirectionViewController.swift */; };
+		7553DE562444F93D0081FC81 /* BuildFile in Embed Frameworks */ = {isa = PBXBuildFile; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		757A21F62474325A00911516 /* KeyboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757A21F52474325A00911516 /* KeyboardViewController.swift */; };
+		757A21FA2474325A00911516 /* SantanderTapKeyboard.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 757A21F32474325A00911516 /* SantanderTapKeyboard.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		757A22042474373E00911516 /* Messages.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 757A22032474373E00911516 /* Messages.framework */; };
+		757A22072474373E00911516 /* MessagesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 757A22062474373E00911516 /* MessagesViewController.swift */; };
+		757A220A2474373E00911516 /* MainInterface.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 757A22082474373E00911516 /* MainInterface.storyboard */; };
+		757A220C2474374200911516 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 757A220B2474374200911516 /* Assets.xcassets */; };
+		757A22102474374200911516 /* SantanderTap.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 757A22022474373E00911516 /* SantanderTap.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		9F1A2802F42DC4CF7FA83E78 /* Pods_SanTapApp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C2749D3E4CA77BC703253D70 /* Pods_SanTapApp.framework */; };
+		A1C1964C23FC4C570012EA6A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C1964B23FC4C570012EA6A /* AppDelegate.swift */; };
+		A1C1964E23FC4C570012EA6A /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C1964D23FC4C570012EA6A /* SceneDelegate.swift */; };
+		A1C1965023FC4C570012EA6A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1C1964F23FC4C570012EA6A /* ViewController.swift */; };
+		A1C1965323FC4C570012EA6A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1C1965123FC4C570012EA6A /* Main.storyboard */; };
+		A1C1965523FC4C5F0012EA6A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1C1965423FC4C5F0012EA6A /* Assets.xcassets */; };
+		A1C1965823FC4C5F0012EA6A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A1C1965623FC4C5F0012EA6A /* LaunchScreen.storyboard */; };
+		AFC27836CB66B5CBEB23FF6A /* Pods_SantanderTapKeyboard.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 25F6B58D6DF5012F099FC09E /* Pods_SantanderTapKeyboard.framework */; };
+		D51D2C8B66E2AE4C9F8AB34F /* Pods_SantanderTap.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DA131F28F4058A027955DBC /* Pods_SantanderTap.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		757A21F82474325A00911516 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1C1964023FC4C570012EA6A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 757A21F22474325A00911516;
+			remoteInfo = TecladoKeyboard;
+		};
+		757A220E2474374200911516 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1C1964023FC4C570012EA6A /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 757A22012474373E00911516;
+			remoteInfo = TecladoiMessage;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7553DE572444F93E0081FC81 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7553DE562444F93D0081FC81 /* BuildFile in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1C1966E23FC51C60012EA6A /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				757A21FA2474325A00911516 /* SantanderTapKeyboard.appex in Embed App Extensions */,
+				757A22102474374200911516 /* SantanderTap.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		25F6B58D6DF5012F099FC09E /* Pods_SantanderTapKeyboard.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SantanderTapKeyboard.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		35F35F90BF02EF6AB170F568 /* Pods-SantanderTap.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SantanderTap.debug.xcconfig"; path = "Target Support Files/Pods-SantanderTap/Pods-SantanderTap.debug.xcconfig"; sourceTree = "<group>"; };
+		41C04DD670C04B5B6C9433F3 /* Pods-SanTapApp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SanTapApp.debug.xcconfig"; path = "Target Support Files/Pods-SanTapApp/Pods-SanTapApp.debug.xcconfig"; sourceTree = "<group>"; };
+		668AF76E4A05DC7F579CD818 /* Pods-SanTapApp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SanTapApp.release.xcconfig"; path = "Target Support Files/Pods-SanTapApp/Pods-SanTapApp.release.xcconfig"; sourceTree = "<group>"; };
+		751CA99C2441A55600BCD2E7 /* URLRedirectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLRedirectionViewController.swift; sourceTree = "<group>"; };
+		757A21F32474325A00911516 /* SantanderTapKeyboard.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SantanderTapKeyboard.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		757A21F52474325A00911516 /* KeyboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardViewController.swift; sourceTree = "<group>"; };
+		757A21F72474325A00911516 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		757A22022474373E00911516 /* SantanderTap.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = SantanderTap.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		757A22032474373E00911516 /* Messages.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Messages.framework; path = System/Library/Frameworks/Messages.framework; sourceTree = SDKROOT; };
+		757A22062474373E00911516 /* MessagesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessagesViewController.swift; sourceTree = "<group>"; };
+		757A22092474373E00911516 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/MainInterface.storyboard; sourceTree = "<group>"; };
+		757A220B2474374200911516 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		757A220D2474374200911516 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		75B66187243A687C008A80D2 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		75B6618B243A68D8008A80D2 /* Alamofire.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Alamofire.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		7AA15CE3F67261A1C29484A3 /* Pods-SantanderTapKeyboard.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SantanderTapKeyboard.debug.xcconfig"; path = "Target Support Files/Pods-SantanderTapKeyboard/Pods-SantanderTapKeyboard.debug.xcconfig"; sourceTree = "<group>"; };
+		7D8E94700F0E44D5755DB946 /* Pods-SantanderTap.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SantanderTap.release.xcconfig"; path = "Target Support Files/Pods-SantanderTap/Pods-SantanderTap.release.xcconfig"; sourceTree = "<group>"; };
+		9DA131F28F4058A027955DBC /* Pods_SantanderTap.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SantanderTap.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1C1964823FC4C570012EA6A /* SanTapApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SanTapApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A1C1964B23FC4C570012EA6A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A1C1964D23FC4C570012EA6A /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
+		A1C1964F23FC4C570012EA6A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A1C1965223FC4C570012EA6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A1C1965423FC4C5F0012EA6A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A1C1965723FC4C5F0012EA6A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A1C1965923FC4C5F0012EA6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		C2749D3E4CA77BC703253D70 /* Pods_SanTapApp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_SanTapApp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D15641B0D11759E30D648842 /* Pods-SantanderTapKeyboard.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-SantanderTapKeyboard.release.xcconfig"; path = "Target Support Files/Pods-SantanderTapKeyboard/Pods-SantanderTapKeyboard.release.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		757A21F02474325A00911516 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AFC27836CB66B5CBEB23FF6A /* Pods_SantanderTapKeyboard.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		757A21FF2474373E00911516 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				757A22042474373E00911516 /* Messages.framework in Frameworks */,
+				D51D2C8B66E2AE4C9F8AB34F /* Pods_SantanderTap.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1C1964523FC4C570012EA6A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9F1A2802F42DC4CF7FA83E78 /* Pods_SanTapApp.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		437DA1B2223DF6920CCE78F6 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				41C04DD670C04B5B6C9433F3 /* Pods-SanTapApp.debug.xcconfig */,
+				668AF76E4A05DC7F579CD818 /* Pods-SanTapApp.release.xcconfig */,
+				35F35F90BF02EF6AB170F568 /* Pods-SantanderTap.debug.xcconfig */,
+				7D8E94700F0E44D5755DB946 /* Pods-SantanderTap.release.xcconfig */,
+				7AA15CE3F67261A1C29484A3 /* Pods-SantanderTapKeyboard.debug.xcconfig */,
+				D15641B0D11759E30D648842 /* Pods-SantanderTapKeyboard.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		59F6FF93F33FABE548C9ACB7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				75B6618B243A68D8008A80D2 /* Alamofire.framework */,
+				75B66187243A687C008A80D2 /* Alamofire.framework */,
+				757A22032474373E00911516 /* Messages.framework */,
+				C2749D3E4CA77BC703253D70 /* Pods_SanTapApp.framework */,
+				9DA131F28F4058A027955DBC /* Pods_SantanderTap.framework */,
+				25F6B58D6DF5012F099FC09E /* Pods_SantanderTapKeyboard.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		757A21F42474325A00911516 /* SantanderTapKeyboard */ = {
+			isa = PBXGroup;
+			children = (
+				757A21F52474325A00911516 /* KeyboardViewController.swift */,
+				757A21F72474325A00911516 /* Info.plist */,
+			);
+			path = SantanderTapKeyboard;
+			sourceTree = "<group>";
+		};
+		757A22052474373E00911516 /* SantanderTap */ = {
+			isa = PBXGroup;
+			children = (
+				757A22062474373E00911516 /* MessagesViewController.swift */,
+				757A22082474373E00911516 /* MainInterface.storyboard */,
+				757A220B2474374200911516 /* Assets.xcassets */,
+				757A220D2474374200911516 /* Info.plist */,
+			);
+			path = SantanderTap;
+			sourceTree = "<group>";
+		};
+		A1C1963F23FC4C570012EA6A = {
+			isa = PBXGroup;
+			children = (
+				A1C1964A23FC4C570012EA6A /* SanTapApp */,
+				757A21F42474325A00911516 /* SantanderTapKeyboard */,
+				757A22052474373E00911516 /* SantanderTap */,
+				A1C1964923FC4C570012EA6A /* Products */,
+				59F6FF93F33FABE548C9ACB7 /* Frameworks */,
+				437DA1B2223DF6920CCE78F6 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		A1C1964923FC4C570012EA6A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A1C1964823FC4C570012EA6A /* SanTapApp.app */,
+				757A21F32474325A00911516 /* SantanderTapKeyboard.appex */,
+				757A22022474373E00911516 /* SantanderTap.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A1C1964A23FC4C570012EA6A /* SanTapApp */ = {
+			isa = PBXGroup;
+			children = (
+				A1C1964B23FC4C570012EA6A /* AppDelegate.swift */,
+				A1C1964D23FC4C570012EA6A /* SceneDelegate.swift */,
+				A1C1964F23FC4C570012EA6A /* ViewController.swift */,
+				A1C1965123FC4C570012EA6A /* Main.storyboard */,
+				A1C1965423FC4C5F0012EA6A /* Assets.xcassets */,
+				A1C1965623FC4C5F0012EA6A /* LaunchScreen.storyboard */,
+				A1C1965923FC4C5F0012EA6A /* Info.plist */,
+				751CA99C2441A55600BCD2E7 /* URLRedirectionViewController.swift */,
+			);
+			path = SanTapApp;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		757A21F22474325A00911516 /* SantanderTapKeyboard */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 757A21FB2474325A00911516 /* Build configuration list for PBXNativeTarget "SantanderTapKeyboard" */;
+			buildPhases = (
+				F5E8DD4DA7B8EB387FF657A8 /* [CP] Check Pods Manifest.lock */,
+				757A21EF2474325A00911516 /* Sources */,
+				757A21F02474325A00911516 /* Frameworks */,
+				757A21F12474325A00911516 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SantanderTapKeyboard;
+			productName = TecladoKeyboard;
+			productReference = 757A21F32474325A00911516 /* SantanderTapKeyboard.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		757A22012474373E00911516 /* SantanderTap */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 757A22132474374200911516 /* Build configuration list for PBXNativeTarget "SantanderTap" */;
+			buildPhases = (
+				6526ABF9057A2DEAB5766439 /* [CP] Check Pods Manifest.lock */,
+				757A21FE2474373E00911516 /* Sources */,
+				757A21FF2474373E00911516 /* Frameworks */,
+				757A22002474373E00911516 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SantanderTap;
+			productName = TecladoiMessage;
+			productReference = 757A22022474373E00911516 /* SantanderTap.appex */;
+			productType = "com.apple.product-type.app-extension.messages";
+		};
+		A1C1964723FC4C570012EA6A /* SanTapApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A1C1965C23FC4C5F0012EA6A /* Build configuration list for PBXNativeTarget "SanTapApp" */;
+			buildPhases = (
+				56108D5C834A42429672CF3F /* [CP] Check Pods Manifest.lock */,
+				A1C1964423FC4C570012EA6A /* Sources */,
+				A1C1964523FC4C570012EA6A /* Frameworks */,
+				A1C1964623FC4C570012EA6A /* Resources */,
+				A1C1966E23FC51C60012EA6A /* Embed App Extensions */,
+				7582691B243E4B88001CEDD6 /* ShellScript */,
+				7553DE572444F93E0081FC81 /* Embed Frameworks */,
+				4E3B93B18935A3BDE0FDC561 /* [CP] Embed Pods Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				757A21F92474325A00911516 /* PBXTargetDependency */,
+				757A220F2474374200911516 /* PBXTargetDependency */,
+			);
+			name = SanTapApp;
+			productName = SanTap;
+			productReference = A1C1964823FC4C570012EA6A /* SanTapApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A1C1964023FC4C570012EA6A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1130;
+				LastUpgradeCheck = 1130;
+				ORGANIZATIONNAME = IDmission;
+				TargetAttributes = {
+					757A21F22474325A00911516 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					757A22012474373E00911516 = {
+						CreatedOnToolsVersion = 11.3.1;
+					};
+					A1C1964723FC4C570012EA6A = {
+						CreatedOnToolsVersion = 11.3;
+					};
+				};
+			};
+			buildConfigurationList = A1C1964323FC4C570012EA6A /* Build configuration list for PBXProject "SanTapApp" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A1C1963F23FC4C570012EA6A;
+			productRefGroup = A1C1964923FC4C570012EA6A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A1C1964723FC4C570012EA6A /* SanTapApp */,
+				757A21F22474325A00911516 /* SantanderTapKeyboard */,
+				757A22012474373E00911516 /* SantanderTap */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		757A21F12474325A00911516 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		757A22002474373E00911516 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				757A220C2474374200911516 /* Assets.xcassets in Resources */,
+				757A220A2474373E00911516 /* MainInterface.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1C1964623FC4C570012EA6A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1C1965823FC4C5F0012EA6A /* LaunchScreen.storyboard in Resources */,
+				A1C1965523FC4C5F0012EA6A /* Assets.xcassets in Resources */,
+				A1C1965323FC4C570012EA6A /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		4E3B93B18935A3BDE0FDC561 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SanTapApp/Pods-SanTapApp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-SanTapApp/Pods-SanTapApp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-SanTapApp/Pods-SanTapApp-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		56108D5C834A42429672CF3F /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SanTapApp-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6526ABF9057A2DEAB5766439 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SantanderTap-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7582691B243E4B88001CEDD6 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\n\n";
+		};
+		F5E8DD4DA7B8EB387FF657A8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-SantanderTapKeyboard-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		757A21EF2474325A00911516 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				757A21F62474325A00911516 /* KeyboardViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		757A21FE2474373E00911516 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				757A22072474373E00911516 /* MessagesViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A1C1964423FC4C570012EA6A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A1C1965023FC4C570012EA6A /* ViewController.swift in Sources */,
+				A1C1964C23FC4C570012EA6A /* AppDelegate.swift in Sources */,
+				A1C1964E23FC4C570012EA6A /* SceneDelegate.swift in Sources */,
+				751CA99D2441A55600BCD2E7 /* URLRedirectionViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		757A21F92474325A00911516 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 757A21F22474325A00911516 /* SantanderTapKeyboard */;
+			targetProxy = 757A21F82474325A00911516 /* PBXContainerItemProxy */;
+		};
+		757A220F2474374200911516 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 757A22012474373E00911516 /* SantanderTap */;
+			targetProxy = 757A220E2474374200911516 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		757A22082474373E00911516 /* MainInterface.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				757A22092474373E00911516 /* Base */,
+			);
+			name = MainInterface.storyboard;
+			sourceTree = "<group>";
+		};
+		A1C1965123FC4C570012EA6A /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1C1965223FC4C570012EA6A /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A1C1965623FC4C5F0012EA6A /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A1C1965723FC4C5F0012EA6A /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		757A21FC2474325A00911516 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7AA15CE3F67261A1C29484A3 /* Pods-SantanderTapKeyboard.debug.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 27;
+				DEVELOPMENT_TEAM = SXB7K82DRL;
+				INFOPLIST_FILE = SantanderTapKeyboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.idmission.santap.Telclado;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = Teclado_Development_7_April;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		757A21FD2474325A00911516 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = D15641B0D11759E30D648842 /* Pods-SantanderTapKeyboard.release.xcconfig */;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 27;
+				DEVELOPMENT_TEAM = SXB7K82DRL;
+				INFOPLIST_FILE = SantanderTapKeyboard/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.idmission.santap.Telclado;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = Telclado_06_April_2020;
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		757A22112474374200911516 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 35F35F90BF02EF6AB170F568 /* Pods-SantanderTap.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 27;
+				DEVELOPMENT_TEAM = SXB7K82DRL;
+				INFOPLIST_FILE = SantanderTap/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.idmission.santap.imessage;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = SanTap_iMessage_development_19_May_2020;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		757A22122474374200911516 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7D8E94700F0E44D5755DB946 /* Pods-SantanderTap.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = "iMessage App Icon";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 27;
+				DEVELOPMENT_TEAM = SXB7K82DRL;
+				INFOPLIST_FILE = SantanderTap/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.idmission.santap.imessage;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = SanTap_iMessage_Appstore_20th_May_2020;
+				SKIP_INSTALL = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		A1C1965A23FC4C5F0012EA6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A1C1965B23FC4C5F0012EA6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A1C1965D23FC4C5F0012EA6A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 41C04DD670C04B5B6C9433F3 /* Pods-SanTapApp.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 27;
+				DEVELOPMENT_TEAM = SXB7K82DRL;
+				INFOPLIST_FILE = SanTapApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Teclado/RSAMobileSdk",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.idmission.santap;
+				PRODUCT_NAME = SanTapApp;
+				PROVISIONING_PROFILE_SPECIFIER = Santap_Development_7_April;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64e armv7 armv7s arm64";
+			};
+			name = Debug;
+		};
+		A1C1965E23FC4C5F0012EA6A /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 668AF76E4A05DC7F579CD818 /* Pods-SanTapApp.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 27;
+				DEVELOPMENT_TEAM = SXB7K82DRL;
+				INFOPLIST_FILE = SanTapApp/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Teclado/RSAMobileSdk",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.idmission.santap;
+				PRODUCT_NAME = SanTapApp;
+				PROVISIONING_PROFILE_SPECIFIER = "SanTap 2";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "arm64e armv7 armv7s arm64";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		757A21FB2474325A00911516 /* Build configuration list for PBXNativeTarget "SantanderTapKeyboard" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				757A21FC2474325A00911516 /* Debug */,
+				757A21FD2474325A00911516 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		757A22132474374200911516 /* Build configuration list for PBXNativeTarget "SantanderTap" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				757A22112474374200911516 /* Debug */,
+				757A22122474374200911516 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1C1964323FC4C570012EA6A /* Build configuration list for PBXProject "SanTapApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1C1965A23FC4C5F0012EA6A /* Debug */,
+				A1C1965B23FC4C5F0012EA6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A1C1965C23FC4C5F0012EA6A /* Build configuration list for PBXNativeTarget "SanTapApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1C1965D23FC4C5F0012EA6A /* Debug */,
+				A1C1965E23FC4C5F0012EA6A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A1C1964023FC4C570012EA6A /* Project object */;
+}

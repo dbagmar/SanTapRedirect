@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-SanTapApp/Pods-SanTapApp-frameworks.sh
+${BUILT_PRODUCTS_DIR}/SantanderTapPod/SantanderTapPod.framework
+${BUILT_PRODUCTS_DIR}/SantanderTapKeyboardPod/SantanderTapKeyboardPod.framework

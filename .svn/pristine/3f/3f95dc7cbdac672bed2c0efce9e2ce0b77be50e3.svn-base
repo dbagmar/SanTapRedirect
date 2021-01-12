@@ -1,0 +1,6 @@
+framework module SantanderTapKeyboardPod {
+  umbrella header "SantanderTapKeyboardPod-umbrella.h"
+
+  export *
+  module * { export * }
+}

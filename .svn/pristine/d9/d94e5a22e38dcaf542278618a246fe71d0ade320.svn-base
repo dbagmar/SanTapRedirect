@@ -1,0 +1,234 @@
+//
+//  secondTableViewCell.swift
+//  Teclado
+//
+//  Created by MCB-Air-036 on 11/04/20.
+//  Copyright © 2020 IDmission. All rights reserved.
+//
+
+import UIKit
+
+protocol TranscationHistoryDelegate: class {
+    func cancelPayment(keyboardtype:KeyboardType)
+    func regenaratePaymentURL(keyboardAction:KeyboardAction,genrateURLModel:GenerateURLModelResponse)
+    func startProgessbar(start:Bool)
+    func shownError(error: String)
+}
+
+class secondTableViewCell: UITableViewCell {
+    
+    @IBOutlet weak var cancellationConfirmationView: UIView!
+    @IBOutlet weak var cancellationBtn: UIButton!
+    @IBOutlet weak var amountLabel : UILabel!
+    @IBOutlet weak var payBtn: UIButton!
+    @IBOutlet weak var transcationDate: UILabel!
+    @IBOutlet weak var transcationTime: UILabel!
+    @IBOutlet weak var amountStackViewCenter: NSLayoutConstraint!
+    @IBOutlet weak var cancelStatusLabel: UILabel!
+    @IBOutlet weak var finalTranscationsLabel: UILabel!
+    
+    var signIn:SignInKeyboardModelResponse?
+    var rsaKey:RSAEncryptionService?
+    var historyData:History?
+    weak var delegate:TranscationHistoryDelegate?
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+    }
+    
+    override func setSelected(_ selected: Bool, animated: Bool) {
+        super.setSelected(selected, animated: animated)
+    }
+    
+    func setData(history:History,status:Bool) -> UITableViewCell{
+        self.historyData = history
+        self.cancellationConfirmationView.isHidden = true
+        if status {
+            self.finalTranscationsLabel.text = "Último movimiento"
+            self.finalTranscationsLabel.isHidden = false
+        }else{
+            
+            self.finalTranscationsLabel.isHidden = true
+        }
+        
+        if history.status == HistoryStatus.cancelada{
+            cancellationBtn.isHidden = true
+            payBtn.isHidden = true
+            transcationDate.isHidden = false
+            transcationTime.isHidden = false
+            transcationDate.text = AppUtility.formatDate(mainDate: history.date, showDateFormat: "dd/MMMM/yy")
+            transcationTime.text = AppUtility.formatDate(mainDate: history.date, showDateFormat: "HH:mm")
+            amountLabel.text = "$" + history.amount
+            cancelStatusLabel.isHidden = false
+            
+        }else{
+            
+            cancelStatusLabel.isHidden = true
+            cancellationBtn.isHidden = false
+            payBtn.isHidden = false
+            transcationDate.isHidden = true
+            transcationTime.isHidden = true
+            amountLabel.text = "$" + history.amount
+        }
+        return self
+    }
+    
+    
+    
+    @IBAction func cancellationButtonClick(_ sender: Any) {
+        self.cancellationConfirmationView.isHidden = false
+    }
+    
+    @IBAction func onPayButtonClick(_ sender: Any) {
+        let network = try? Reachability()
+        if (network?.isConnectedToNetwork ?? false) {
+            self.delegate?.startProgessbar(start: true)
+            SignIn.signIn(rsaKey: self.rsaKey!){ [weak self] result in
+                switch result {
+                case .success(let data):
+                    if data.body != nil {
+                        if let authToken = UserDefaults.standard.string(forKey: AuthConstant.authToken) {
+                            self?.getURL(authToken: authToken, signIn: data) { result in
+                                switch result {
+                                case .success(let data):
+                                    printLog(data)
+                                    break
+                                case .failure(let error):
+                                    printLog(error)
+                                    break
+                                }
+                            }
+                        }
+                    }else{
+                        //delegate
+                        self?.delegate?.shownError(error: data.desc)
+                    }
+                    
+                case .failure(let error):
+                    self?.delegate?.shownError(error: AlertMessage.networkError)
+                    printLog(error)
+                    break
+                }
+            }
+        }else{ alert("Red no disponible") }
+    }
+    
+    
+    @IBAction func cancellationConfirmationBtnClick(_ sender: Any) {
+        let network = try? Reachability()
+        if (network?.isConnectedToNetwork ?? false) {
+            self.delegate?.startProgessbar(start: true)
+            SignIn.signIn(rsaKey: self.rsaKey!) { [weak self] result in
+                switch result {
+                    
+                case .success(let data):
+                    if data.body != nil {
+                        if let authToken = UserDefaults.standard.string(forKey: AuthConstant.authToken) {
+                                               self?.paymentCancel(authToken: authToken, signIn: data) { result in
+                                                   switch result {
+                                                   case .success(let data):
+                                                       printLog(data)
+                                                       break
+                                                   case .failure(let error):
+                                                       printLog(error)
+                                                       self?.delegate?.startProgessbar(start: false)
+                                                       break
+                                                   }
+                                               }
+                                               
+                                           }
+                    }else{
+                        //delegate
+                         self?.delegate?.shownError(error: data.desc)
+                    }
+                   
+                case .failure(let error):
+                    printLog(error)
+                    self?.delegate?.startProgessbar(start: false)
+                    break
+                }
+            }
+        } else {
+            self.delegate?.shownError(error: "Red no disponible")
+        }
+    }
+    
+    @IBAction func cancellationCancelBtnClick(_ sender: Any) {
+        self.cancellationConfirmationView.isHidden = true
+    }
+    
+    
+    func getURL(authToken:String,signIn:SignInKeyboardModelResponse,_ completion: @escaping ((NetworkResult<GenerateURLModelResponse, ErrorResult>) -> Void)){
+        
+        AccessToken.getacessToken(signIN: signIn){ [weak self] results in
+            switch results{
+            case .success(let data):
+                let regeneratePayU = ReGenerateURLServiceRequestModelRequest.init(deviceId: self?.rsaKey?.deviceId ?? " ", linkId:self?.historyData?.id ?? " ")
+                RegeneratePaymentURL.getRegenarateURL(genrateURLSErvice: regeneratePayU, skk:self?.rsaKey?.skk ?? " ", authoriztion: authToken, authToken: data.access_token){ [weak self] result in
+                    switch result {
+                    case .success(let data):
+                        genratURLModel = data
+                        if genratURLModel?.body != nil {
+                            printLog(data)
+                            self?.delegate?.regenaratePaymentURL(keyboardAction: .character("Enviar"), genrateURLModel: data)
+                            self?.delegate?.startProgessbar(start: false)
+                            break
+                        }else{
+                            //delegate
+                             self?.delegate?.shownError(error: data.desc)
+                            break
+                        }
+                        
+                    case .failure(let error):
+                        printLog(error)
+                        self?.delegate?.startProgessbar(start: false)
+                        self?.delegate?.shownError(error: AlertMessage.networkError)
+                        break
+                    }
+                }
+            case .failure(let error):
+                printLog(error)
+                self?.delegate?.startProgessbar(start: false)
+                self?.delegate?.shownError(error: AlertMessage.networkError)
+                break
+            }
+        }
+    }
+    
+    func paymentCancel(authToken:String,signIn:SignInKeyboardModelResponse,_ completion: @escaping ((NetworkResult<GenerateURLModelResponse, ErrorResult>) -> Void)){
+        
+        AccessToken.getacessToken(signIN: signIn){ [weak self] results in
+            switch results {
+            case .success(let data):
+                let regeneratePayU = ReGenerateURLServiceRequestModelRequest.init(deviceId: self?.rsaKey?.deviceId ?? " ", linkId:self?.historyData?.id ?? " ")
+                PaymentCancelService.paymentCancelRequest(genrateURLSErvice: regeneratePayU, skk:self?.rsaKey?.skk ?? " ", authoriztion: authToken, authToken: data.access_token){ [weak self] result in
+                    switch result{
+                    case .success(let data):
+                        printLog(data)
+                        self?.delegate?.cancelPayment(keyboardtype: .dyanamicValue)
+                        //self?.alert(AlertMessage.cancelPayment)
+                        self?.delegate?.startProgessbar(start: false)
+                        break
+                    case .failure(let error):
+                        printLog(error)
+                        self?.delegate?.startProgessbar(start: false)
+                        self?.delegate?.shownError(error: AlertMessage.networkError)
+                        break
+                    }
+                }
+            case .failure(let error):
+                printLog(error)
+             //   self?.delegate?.startProgessbar(start: false)
+                self?.delegate?.shownError(error: AlertMessage.networkError)
+                break
+                
+            }
+        }
+        
+    }
+    
+    func alert(_ message: String) {
+        let alerter = ToastAlert()
+        alerter.alert(message: message, in: self.contentView, withDuration: 5)
+    }
+}

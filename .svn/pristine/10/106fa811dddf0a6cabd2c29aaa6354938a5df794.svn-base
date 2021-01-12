@@ -1,0 +1,26 @@
+
+
+import Foundation
+
+
+let MAIN_URL = "https://bypass-app-paas-heroku.herokuapp.com/v2/" // url change on 22 may 2020
+//https://bypass-app-paas-heroku.herokuapp.com/v2/
+//let MAIN_URL = "https://tap-mock-login-service.herokuapp.com/"
+
+//let Local_URL = "https://tap-mock-login-service.herokuapp.com/"
+let Local_URL = "https://bypass-app-paas-heroku.herokuapp.com/v2/"
+
+let POST_ACTION = "POST"
+let GET_ACTION = "GET"
+
+let SUCCESS:String = "Success"
+let FAILUER:String = "Failuer"
+let SOME_ERROR_OCCUERD = "Some Error Occured"
+let kMESSAGE = "message"
+
+let DATA = "data"
+
+let NO_NETWORK_CONNECTION = "Please check internet connection"
+
+let AUTH:String = "auth"
+let TOKEN:String = "token"

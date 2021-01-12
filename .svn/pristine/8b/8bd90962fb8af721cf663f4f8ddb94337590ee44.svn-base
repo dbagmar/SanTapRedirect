@@ -1,0 +1,29 @@
+PODS:
+  - SantanderTapKeyboardPod (1.0.0)
+  - SantanderTapPod (1.0.0)
+
+DEPENDENCIES:
+  - SantanderTapKeyboardPod (from `https://github.com/alvarosalasmtz/SantanderTapKeyboardPod.git`)
+  - SantanderTapPod (from `https://github.com/alvarosalasmtz/SantanderTapPod.git`)
+
+EXTERNAL SOURCES:
+  SantanderTapKeyboardPod:
+    :git: https://github.com/alvarosalasmtz/SantanderTapKeyboardPod.git
+  SantanderTapPod:
+    :git: https://github.com/alvarosalasmtz/SantanderTapPod.git
+
+CHECKOUT OPTIONS:
+  SantanderTapKeyboardPod:
+    :commit: 56d9195909e8f08b54ba5d80e5f7919ba95b133d
+    :git: https://github.com/alvarosalasmtz/SantanderTapKeyboardPod.git
+  SantanderTapPod:
+    :commit: f62d4831fbc0f1dfee5ef2abbd00450efee6ed2a
+    :git: https://github.com/alvarosalasmtz/SantanderTapPod.git
+
+SPEC CHECKSUMS:
+  SantanderTapKeyboardPod: 5b405cb087a879b38937adfeb5faeb58882bac67
+  SantanderTapPod: 52ec5f795450c982caccda948063f7011d8fcc33
+
+PODFILE CHECKSUM: 74b0b3ae9ef4e627f29bf020799558be05308a30
+
+COCOAPODS: 1.9.1

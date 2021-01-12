@@ -1,0 +1,418 @@
+//
+//  KeyboardAction.swift
+//  KeyboardKit
+//
+//  Created by Daniel Saidi on 2018-02-02.
+//  Copyright © 2018 Daniel Saidi. All rights reserved.
+//
+
+import UIKit
+
+/**
+ This action enum specifies all currently supported keyboard
+ actions and their standard behavior.
+ 
+ Most keyboard actions have a standard tap action that apply
+ to the input view controller or its text document proxy.
+ 
+ Many actions require manual handling, however. For instance,
+ `image` can't be handled here since it requires assets. The
+ keyboard switchers can't be handled here either since there
+ is no universally applicable "alphabetic keyboard". Actions
+ like these are ways for you to express your intent, but you
+ must handle them yourself.
+*/
+public enum KeyboardAction: Equatable {
+    
+    case
+    none,
+    backspace,
+    capsLock,
+    character(String),
+    command,
+    custom(name: String),
+    dismissKeyboard,
+    escape,
+    function,
+    image(description: String, keyboardImageName: String, imageName: String),
+    moveCursorBackward,
+    moveCursorForward,
+    newLine,
+    option,
+    shift,
+    shiftDown,
+    space,
+    switchKeyboard,
+    switchToKeyboard(KeyboardType),
+    tab
+    
+
+}
+
+
+// MARK: - Public Properties
+
+public extension KeyboardAction {
+    
+    func popupCharacterOptions() -> [String] {
+      switch self {
+        case .character("A"):
+        return ["A", "Á", "À", "Ä", "Â", "Ã", "Å", "Ą", "Æ", "Ā", "ª"]
+        case .character("a"):
+        return ["a", "á", "à", "ä", "â", "ã", "å", "ą", "æ", "ā", "ª"]
+        
+      case .character("C"):
+          return ["C", "Ç", "Ć", "Č"]
+        case .character("c"):
+          return ["c", "ç", "ć", "č"]
+
+        case .character("D"):
+          return ["D", "Đ"]
+        case .character("d"):
+          return ["d", "đ"]
+
+        case .character("E"):
+          return ["E", "É", "È", "Ë", "Ê", "Ę", "Ė", "Ē"]
+        case .character("e"):
+          return ["e", "é", "è", "ë", "ê", "ę", "ė", "ē"]
+
+        case .character("I"):
+          return ["Ī", "Į", "Î", "Ì", "Ï", "Í", "I"]
+        case .character("i"):
+          return ["ī", "į", "î", "ì", "ï", "í", "i"]
+
+        case .character("O"):
+          return ["º", "Ō", "Œ", "Ø", "Õ", "Ô", "Ö", "Ò", "O", "Ó"]
+        case .character("o"):
+          return ["º", "ō", "œ", "ø", "õ", "ô", "ö", "ò", "o", "ó"]
+
+        case .character("U"):
+          return ["Ū", "Û", "Ù", "Ü", "Ú", "U"]
+        case .character("u"):
+          return ["ū", "û", "ù", "ü", "ú", "u"]
+
+        case .character("N"):
+          return ["Ń", "N"]
+        case .character("n"):
+          return ["ń", "n"]
+
+        case .character("S"):
+          return ["S", "Š", "Ś"]
+        case .character("s"):
+          return ["s", "š", "ś"]
+
+        case .character("1"):
+          return ["1", "1º", "1ª"]
+
+        case .character("2"):
+          return ["2", "2º", "2ª"]
+
+        case .character("3"):
+          return ["3", "3º", "3ª"]
+
+        case .character("4"):
+          return ["4", "4º", "4ª"]
+
+        case .character("5"):
+          return ["5", "5º", "5ª"]
+
+        case .character("6"):
+          return ["6", "6º", "6ª"]
+
+        case .character("7"):
+          return ["7", "7º", "7ª"]
+
+        case .character("8"):
+          return ["8", "8º", "8ª"]
+
+        case .character("9"):
+            return ["9º", "9", "9ª"].reversed()
+
+        case .character("0"):
+            return ["0", "0º", "0ª", "°"].reversed()
+
+        case .character("-"):
+          return ["-", "–", "—", "•"]
+        
+        case .character("/"):
+            return ["/", "\\"]
+
+        case .character("$"):
+            return ["$", "€", "£", "¥", "₩", "₽", "¢"].reversed()
+
+        case .character("&"):
+          return ["&", "§"]
+
+        case .character("\""):
+          return ["\"", "”", "“", "„", "»", "«"].reversed()
+
+        case .character("."):
+          return [".", "…"]
+
+        case .character("?"):
+          return ["?", "¿"]
+
+        case .character("!"):
+          return ["!", "¡"]
+
+        case .character("´"):
+            return ["´", "’", "‘", "`"].reversed()
+
+        case .character("%"):
+            return ["%", "‰"]
+
+        case .character("="):
+            return ["=", "≠", "≈"].reversed()
+
+
+      default: return [""]
+      }
+    }
+        
+    func longPressCharacter() -> KeyboardAction {
+      switch self {
+        case .character("E"):
+          return .character("É")
+        case .character("e"):
+          return .character("é")
+        case .character("U"):
+          return .character("Ú")
+        case .character("u"):
+          return .character("ú")
+        case .character("I"):
+          return .character("Í")
+        case .character("i"):
+          return .character("í")
+        case .character("O"):
+          return .character("Ó")
+        case .character("o"):
+          return .character("ó")
+        case .character("A"):
+          return .character("Á")
+        case .character("a"):
+          return .character("á")
+        case .character("?"):
+          return .character("¿")
+        case .character("!"):
+          return .character("¡")
+      default: return .character("")
+      }
+    }
+
+    func test() -> KeyboardAction {
+      switch self {
+      case .character("Historial"): return .character("Historial Test")
+      default: return .character("Test")
+      }
+    }
+    
+    func pressSpecialCharacter(Amount: String, URL: String) -> KeyboardAction {
+      switch self {
+      case .character("Enviar"):
+        if(URL==""){
+            return .character("")
+        }else{
+           // return .character("\nTe envié $" + Amount + " con SanTap. Cóbralo entrando aquí: " + URL + "\n")
+            return .character(URL + "\n")
+        }
+      default: return .character("")
+      }
+    }
+
+    var getNumberString: String {
+        switch self {
+        case .character("0"): return "0"
+        case .character("1"): return "1"
+        case .character("2"): return "2"
+        case .character("3"): return "3"
+        case .character("4"): return "4"
+        case .character("5"): return "5"
+        case .character("6"): return "6"
+        case .character("7"): return "7"
+        case .character("8"): return "8"
+        case .character("9"): return "9"
+        case .character("⌫"): return "-"
+        case .character("C"): return "C"
+        default: return ""
+        }
+    }
+    
+    var getImageDescription: String {
+        switch self {
+        case .image(description: "app", keyboardImageName: "app", imageName: "app"): return "app"
+        case .image(description: "pagar", keyboardImageName: "pagar", imageName: "pagar"): return "pagar"
+        case .image(description: "servicios", keyboardImageName: "servicios", imageName: "servicios"): return "servicios"
+        case .image(description: "servicios", keyboardImageName: "Servicess", imageName: "Servicess"): return "servicios"
+        case .image(description: "atm", keyboardImageName: "atm", imageName: "atm"): return "atm"
+        case .image(description: "atm", keyboardImageName: "ATMs", imageName: "ATMs"): return "atm"
+        case .image(description: "enviarUnselected", keyboardImageName: "enviarUnselected", imageName: "enviarUnselected"): return "enviarUnselected"
+        case .image(description: "enviarSelected", keyboardImageName: "enviarSelected", imageName: "enviarSelected"): return "enviarSelected"
+        case .image(description: "BackArrow", keyboardImageName: "BackArrow", imageName: "BackArrow"): return "BackArrow"
+        case .image(description: "BackArrowCircle", keyboardImageName: "BackArrowCircle", imageName: "BackArrowCircle"): return "BackArrowCircle"
+        case .image(description: "Keyboard", keyboardImageName: "Keyboard", imageName: "Keyboard"): return "Keyboard"
+         case .image(description: "KeyboardWork", keyboardImageName: "Keyboard", imageName: "Keyboard"): return "KeyboardWork"
+        default: return ""
+        }
+    }
+    
+    func returnEmpty() -> KeyboardAction {
+      switch self {
+        default: return .character("")
+      }
+    }
+    
+    var isEnviar: Bool {
+        switch self {
+        case .character("Enviar"): return true
+        default: return false
+        }
+    }
+    
+    
+    var isHistorial: Bool {
+        switch self {
+        case .character("Historial"): return true
+        default: return false
+        }
+    }
+    
+    
+    var isBankURL: Bool {
+        switch self {
+        case .character("www.santander.com.mx"): return true
+        default: return false
+        }
+    }
+    
+    var isSantadarTap: Bool {
+        switch self {
+        case .character("¿Qué es Santander TAP?"): return true
+        default: return false
+        }
+    }
+
+    var isTutorialIOS: Bool {
+        switch self {
+        case .character("Tutorial iOS"): return true
+        default: return false
+        }
+    }
+
+    var isTutorialAndroid: Bool {
+        switch self {
+        case .character("Tutorial Android"): return true
+        default: return false
+        }
+    }
+    
+    var isContactanos: Bool {
+        switch self {
+        case .character("Contáctanos"): return true
+        default: return false
+        }
+    }
+
+    /**
+     Whether or not the action is a content input action.
+     */
+    var isInputAction: Bool {
+        switch self {
+        case .character: return true
+        case .image: return true
+        default: return false
+        }
+    }
+    
+    /**
+     Whether or not the action is a delete action.
+     */
+    var isDeleteAction: Bool {
+        switch self {
+        case .backspace: return true
+        default: return false
+        }
+    }
+    
+    /**
+     Whether or not the action is something that handles the
+     system instead of content.
+     */
+    var isNonTappable: Bool {
+        switch self {
+        case .image: return true
+        case .backspace: return true
+        case .capsLock: return true
+        case .command: return true
+        case .dismissKeyboard: return true
+        case .escape: return true
+        case .function: return true
+        case .moveCursorBackward: return true
+        case .moveCursorForward: return true
+        case .newLine: return true
+        case .option: return true
+        case .shift: return true
+        case .shiftDown: return true
+        case .space: return true
+        case .switchKeyboard: return true
+        case .switchToKeyboard: return true
+        case .tab: return true
+        default: return false
+        }
+    }
+    
+    /**
+     Whether or not the action is something that handles the
+     system instead of content.
+     */
+    var isSystemAction: Bool {
+        switch self {
+        case .backspace: return true
+        case .capsLock: return true
+        case .command: return true
+        case .dismissKeyboard: return true
+        case .escape: return true
+        case .function: return true
+        case .moveCursorBackward: return true
+        case .moveCursorForward: return true
+        case .newLine: return true
+        case .option: return true
+        case .shift: return true
+        case .shiftDown: return true
+        case .space: return true
+        case .switchKeyboard: return true
+        case .switchToKeyboard: return true
+        case .tab: return true
+        default: return false
+        }
+    }
+    
+    /**
+     The standard action, if any, that should be applied to
+     the input view controller when the action is triggered.
+     */
+    var standardInputViewControllerAction: ((UIInputViewController?) -> Void)? {
+        switch self {
+        case .dismissKeyboard: return { controller in controller?.dismissKeyboard() }
+        default: return nil
+        }
+    }
+    
+    /**
+     The standard action, if any, that should be applied to
+     the texst document proxy when the action is triggered.
+     */
+    var standardTextDocumentProxyAction: ((UITextDocumentProxy?) -> Void)? {
+        switch self {
+        case .backspace: return { proxy in proxy?.deleteBackward() }
+        case .character(let char): return { proxy in proxy?.insertText(char) }
+        case .moveCursorBackward: return { proxy in proxy?.adjustTextPosition(byCharacterOffset: -1) }
+        case .moveCursorForward: return { proxy in proxy?.adjustTextPosition(byCharacterOffset: -1) }
+        case .newLine: return { proxy in proxy?.insertText("\n") }
+        case .space: return { proxy in proxy?.insertText(" ") }
+        case .tab: return { proxy in proxy?.insertText("\t") }
+        default: return nil
+        }
+    }
+}
+
+

@@ -1,0 +1,27 @@
+{
+  "name": "SantanderTapPod",
+  "version": "1.0.78",
+  "summary": "A CocoaPods library written in Swift",
+  "description": "This CocoaPods library helps you creating message extension.",
+  "homepage": "https://github.com/dbagmar/SantanderTapPod",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "dbagmar": "darshan.bagmar@idmission.com"
+  },
+  "platforms": {
+    "ios": "11.0"
+  },
+  "swift_versions": "4.2",
+  "source": {
+    "path": "."
+  },
+  "source_files": "SantanderTapPod/**/*.{h,m,swift}",
+  "exclude_files": "Classes/Exclude",
+  "vendored_libraries": "SantanderTapPod/SanTap/lib/v-iphoneos/**/*.a",
+  "frameworks": "CoreTelephony",
+  "resources": "SantanderTapPod/**/*.{png,xib,storyboard,xcassets,cer,ttf,gif}",
+  "swift_version": "4.2"
+}

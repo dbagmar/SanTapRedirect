@@ -1,0 +1,681 @@
+//
+//  CustomMessageViewController.swift
+//  Teclado
+//
+//  Created by Darshan Bagmar on 31/03/20.
+//  Copyright © 2020 IDmission. All rights reserved.
+//
+
+import UIKit
+
+protocol CustomMessageViewControllerDelegate: class {
+    func setMessageUi(setMessageUi:Bool)
+    func addURLMessage(_ item: GenerateURLModelResponse, layoutImg: UIImage?)
+}
+
+
+var amountPagar = " "
+class CustomMessageViewController: UIViewController,UITextFieldDelegate {
+    
+    weak var delegate:CustomMessageViewControllerDelegate?
+    @IBOutlet weak var mainView: UIView!
+    
+    @IBOutlet var messageUiView: UIView!
+    @IBOutlet var uiviewForMsg: UIView!
+    @IBOutlet weak var buttonStackView: UIStackView!
+    @IBOutlet weak var backBtn: UIButton!
+    @IBOutlet weak var keyboardButton: UIButton!
+    
+    @IBOutlet weak var pickerView: UIView!
+    @IBOutlet weak var dynamicAmountPicker: UIPickerView!
+    @IBOutlet weak var versionLabel: UILabel!
+    
+    @IBOutlet var numericView: UIView!
+    @IBOutlet weak var amountTextfield: UITextField!
+    
+    @IBOutlet var amountView: UIView!
+    @IBOutlet weak var amountShowView: UIView!
+    @IBOutlet weak var amountLabel: UILabel!
+    
+    @IBOutlet var passwordView: UIView!
+    @IBOutlet weak var passwordTextfield: UITextField!
+    @IBOutlet weak var submitBtn: UIButton!
+    
+    @IBOutlet var sentView: UIView!
+    @IBOutlet weak var finalAmountLabel: UILabel!
+    
+    @IBOutlet var progressView: UIView!
+    @IBOutlet weak var fixAmountValiationLabel: UILabel!
+    @IBOutlet weak var manualAmountValidationLabel: UILabel!
+
+    var buttonView:UIView?
+    var fixValue:Bool?
+
+    var count = 0
+    var signIn:SignInKeyboardModelResponse?
+    var rsaKey:RSAEncryptionService?
+    var arrofValue:[String]? = ["20","50","100","200","500","1000","2000"]
+    var amount:String = "0.00"
+    var pickerViewAmount:String = "0.00"
+    var password:String = ""
+    
+    deinit {
+        printLog("CustomMessageViewController is deallocated")
+    }
+    // MARK:- ViewController Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        dynamicAmountPicker.dataSource = self
+        dynamicAmountPicker.delegate = self
+        amountTextfield.delegate = self
+       
+       // buttonStackView.addArrangedSubview(buttonView!)
+        pickerView.show()
+        dynamicAmountPicker.selectRow(0, inComponent: 0, animated: true)
+        amount = arrofValue?[0] ?? "0.0"
+        finalAmountLabel.attributedText = NSMutableAttributedString().normal("Enviaste ", fontSizes: 30).bold("$", fontSizes: 30).bold(amountPagar, fontSizes: 30)
+        versionLabel.text = "v" + (Bundle.main.releaseVersionNumber ?? " ") + "." + (Bundle.main.buildVersionNumber ?? " ")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        if fixValue ?? false {
+            count += 1
+            if count == 1 {
+                backBtn.isUserInteractionEnabled = true
+               // backBtn.setImage(UIImage.init(named: "BackArrow"), for: .normal)
+                 backBtn.setImage(UIImage.setImageFromBundle(name: "BackArrow")!/*UIImage.init(named: "BackArrowCircle")*/, for: .normal)
+                sentView.frame = pickerView.bounds
+                pickerView.addSubview(self.sentView)
+              //  buttonStackView.isUserInteractionEnabled = false
+                finalAmountLabel.attributedText = NSMutableAttributedString().normal("Enviaste ").bold("$").bold(amountPagar.shownAmount())
+            }else{
+                printLog("view present")
+            }
+            
+        }else{
+            backBtn.isUserInteractionEnabled = true
+            backBtn.setImage(UIImage.setImageFromBundle(name: "BackArrow")!/*UIImage.init(named: "BackArrowCircle")*/, for: .normal)
+           // buttonStackView.isUserInteractionEnabled = false
+            progressView.frame = pickerView.bounds
+            pickerView.addSubview(self.progressView)
+            progressView.showActivityIndicatory()
+            let network = try? Reachability()
+            if (network?.isConnectedToNetwork ?? false) {
+                let skk:String = RandomKey().generateRandomBytes()!
+                let deviceId:String = RandomKey().getDeviceId(length: 10)//RandomKey().randomNumString(length: 10)//"1234567890"//
+                rsaKey = RSAEncryptionService.init(deviceId: deviceId, skk: skk)
+                SignIn.signIn(rsaKey: rsaKey!){ result in
+                    switch result {
+                    case .success(let data):
+                        self.signIn = data
+                        self.progressView.removeChildView()
+                        self.progressView.removeFromSuperview()
+                        if (self.signIn?.body != nil){
+                            self.amountValidation(amount: self.amount, alertLabel: self.fixAmountValiationLabel)
+                        }else{
+                            self.alert(self.signIn?.desc ?? " ")
+                        }
+                    case .failure(let error):
+                        printLog(error)
+                        self.progressView.removeChildView()
+                        self.progressView.removeFromSuperview()
+                    //   self.alert(AlertMessage.networkError)
+                        break
+                    }
+                }
+            }else{
+                self.progressView.removeChildView()
+                self.progressView.removeFromSuperview()
+                alert("Red no disponible")
+            }
+        }
+    }
+    
+    
+
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        print("Will Transition to size \(size) from super view size \(self.view.frame.size)")
+
+        if (size.width > self.view.frame.size.width) {
+            print("Landscape")
+        } else {
+            print("Portrait")
+        }
+
+
+
+    }
+    
+    // MARK:- Button Actions
+    
+    func removeLastView() {
+        if(pickerView.subviews.contains(sentView)){
+            sentView.removeFromSuperview()
+        }else if(pickerView.subviews.contains(passwordView)){
+            passwordView.removeFromSuperview()
+        }else if(pickerView.subviews.contains(amountView)){
+            amountView.removeFromSuperview()
+        }else if(pickerView.subviews.contains(numericView)){
+            if (numericView.subviews.contains(amountView)) {
+                amountView.removeFromSuperview()
+            }else{
+                numericView.removeFromSuperview()
+                dynamicAmountPicker.selectRow(0, inComponent: 0, animated: true)
+                amount = arrofValue?[0] ?? "0.0"
+            }
+        }else{
+            removeParentView()
+            self.delegate?.setMessageUi(setMessageUi: true)
+        }
+    }
+    
+    func removeParentView() {
+        clearMemory()
+       // self.delegate?.setKeyBoard(keyboardtype: .alphabetic(uppercased: true))
+        // self.dismiss(animated: true, completion: nil)
+    }
+    
+    func clearMemory() {
+        buttonView = nil
+        arrofValue = nil
+        sentView.removeFromSuperview()
+        amountView.removeFromSuperview()
+        passwordView.removeFromSuperview()
+        numericView.removeFromSuperview()
+        pickerView.removeFromSuperview()
+        self.removeFromParent()
+    }
+    
+   /* @IBAction func onBackBtnClick(_ sender: Any) {
+        UIDevice.current.playInputClick()
+        removeLastView()
+      //  self.dismiss(animated: true, completion: nil)
+    }
+    */
+    
+    @IBAction func onKeyBoardBtnClick(_ sender: Any) {
+        UIDevice.current.playInputClick()
+        removeParentView()
+    }
+    
+    @IBAction func onBackBtnClick(_ sender: Any) {
+    UIDevice.current.playInputClick()
+     //self.delegate?.setMessageUi(setMessageUi: true)
+    removeLastView()
+    }
+    
+    @IBAction func onDollarBtnClick(_ sender: Any) {
+        UIDevice.current.playInputClick()
+       // buttonStackView.isUserInteractionEnabled = false
+        backBtn.isUserInteractionEnabled = true
+        amount = "0.00"
+        amountTextfield.text = ""
+        numericView.frame = pickerView.bounds
+        pickerView.addSubview(self.numericView)
+        self.amountValidation(amount: amount, alertLabel: manualAmountValidationLabel)
+    }
+    
+    @IBAction func onAmountFixBtnClick(_ sender: Any) {
+        UIDevice.current.playInputClick()
+        passwordTextfield.text = ""
+        if amount.count > 0 {
+            amountPagar = amount
+            passwordView.frame = pickerView.bounds
+            pickerView.addSubview(self.passwordView)
+        }
+    }
+    
+    @IBAction func onFixAmountSubmitBtnClick(_ sender: Any) {
+        UIDevice.current.playInputClick()
+        backBtn.isUserInteractionEnabled = true
+        let manualAmount:Double = Double(amount) ?? 0.0
+        if (Amount.minimumAmount <= manualAmount && manualAmount <= Amount.maximumAmount)  {
+            let amountShow:String = String(manualAmount)
+          //  buttonStackView.isUserInteractionEnabled = false
+            amountLabel.attributedText = NSMutableAttributedString().normal("Vas a enviar ").bold("$").bold(amountShow.shownAmount())
+            amountView.frame = pickerView.bounds
+            pickerView.addSubview(self.amountView)
+        }
+    }
+    
+    @IBAction func manualAmountBtnClick(_ sender: Any) {
+        UIDevice.current.playInputClick()
+        let manualAmount:Double = Double(amount) ?? 0.0
+        if (Amount.minimumAmount <= manualAmount && manualAmount <= Amount.maximumAmount)  {
+            let amountShow:String = String(manualAmount)
+          //  buttonStackView.isUserInteractionEnabled = false
+            amountLabel.attributedText = NSMutableAttributedString().normal("Vas a enviar ").bold("$").bold(amountShow.shownAmount())
+            amountView.frame = numericView.bounds
+            numericView.addSubview(self.amountView)
+        }
+    }
+    
+    @IBAction func onPasswordSubmitBtnClick(_ sender: Any) {
+        var count = 0
+        UIDevice.current.playInputClick()
+        let skk:String = RandomKey().generateRandomBytes()!
+        let deviceId:String = RandomKey().getDeviceId(length: 10)//RandomKey().randomNumString(length: 10)//"1234567890"//
+        rsaKey = RSAEncryptionService.init(deviceId: deviceId, skk: skk)
+        if (passwordTextfield.text?.count == 4) {
+            self.passwordView.removeFromSuperview()
+            progressView.frame = pickerView.bounds
+            pickerView.addSubview(self.progressView)
+            progressView.showActivityIndicatory()
+            amountPagar = amount
+            let network = try? Reachability()
+            if (network?.isConnectedToNetwork ?? false) {
+                
+                SignIn.signIn(rsaKey: self.rsaKey!){ result in
+                    switch result {
+                    case .success(let data):
+                        self.signIn = data
+                        if self.signIn?.body != nil {
+                            if let authToken = UserDefaults.standard.string(forKey: AuthConstant.authToken){
+                                self.getData(authToken: authToken, signIn: data){ result in
+                                    switch result{
+                                    case .success(let data):
+                                        genratURLModel = data
+                                        if genratURLModel?.body != nil {
+                                            UserDefaults.standard.set(true, forKey: "message")
+                                            self.progressView.removeChildView()
+                                            self.progressView.removeFromSuperview()
+                                            self.amountView.removeFromSuperview()
+                                            self.numericView.removeFromSuperview()
+                                            self.finalAmountLabel.attributedText = NSMutableAttributedString().normal("Enviaste ").bold("$").bold(amountPagar.shownAmount())
+                                            self.sentView.frame = self.pickerView.bounds
+                                            self.pickerView.addSubview(self.sentView)
+                                            let urlbody = urlBody.init(link: genratURLModel?.body?.link ?? " ", message: genratURLModel?.body?.message ?? " ", linkPassword: genratURLModel?.body?.linkPassword ?? " ")
+                                            let model = GenerateURLModelResponse.init(code: genratURLModel?.code ?? " ", desc: genratURLModel?.desc ?? " ", body: urlbody)
+                                            self.delegate?.addURLMessage(model, layoutImg: self.createLayoutImage())
+                                            printLog(data)
+                                            break
+                                        }else{
+                                            self.alert(data.desc)
+                                        }
+                                        
+                                    case .failure(let error):
+                                        printLog(error)
+                                        self.progressView.removeChildView()
+                                        self.alert(AlertMessage.networkError)
+                                        break
+                                    }
+                                }
+                            }
+                        }else{
+                            self.alert(self.signIn?.desc ?? " ")
+                        }
+                    case .failure(let error):
+                        printLog(error)
+                        if count <= 0 {
+                            count += 1
+                            SignIn.signIn(rsaKey: self.rsaKey!){ result in
+                                switch result {
+                                case .success(let data):
+                                    self.signIn = data
+                                    if self.signIn?.body != nil {
+                                        if let authToken = UserDefaults.standard.string(forKey: AuthConstant.authToken){
+                                            self.getData(authToken: authToken, signIn: data){ result in
+                                                switch result{
+                                                case .success(let data):
+                                                    genratURLModel = data
+                                                    if genratURLModel?.body != nil {
+                                                        UserDefaults.standard.set(true, forKey: "message")
+                                                        self.progressView.removeChildView()
+                                                        self.progressView.removeFromSuperview()
+                                                        self.removeFromParent()
+                                                        self.finalAmountLabel.attributedText = NSMutableAttributedString().normal("Enviaste ").bold("$").bold(amountPagar.shownAmount())
+                                                        self.uiviewForMsg.frame = self.pickerView.bounds
+                                                        self.pickerView.addSubview(self.uiviewForMsg)
+                                                        self.delegate?.setMessageUi(setMessageUi: false)
+                                                        self.delegate?.addURLMessage(genratURLModel!, layoutImg: self.createLayoutImage())
+                                                      //  self.delegate?.sendAmount(keyboardAction: .character("Enviar"),genrateURLModel: data, view: self.view)
+                                                        printLog(data)
+                                                        break
+                                                    }else{
+                                                        self.alert(data.desc)
+                                                    }
+                                                    
+                                                case .failure(let error):
+                                                    printLog(error)
+                                                    self.progressView.removeChildView()
+                                                    self.alert(AlertMessage.networkError)
+                                                    break
+                                                }
+                                            }
+                                        }
+                                    }else{
+                                        self.alert(self.signIn?.desc ?? " ")
+                                    }
+                                case .failure(let error):
+                                    printLog(error)
+                                    self.progressView.removeChildView()
+                                    self.alert(AlertMessage.networkError)
+                                    break
+                                }
+                            }
+                        }else{
+                            self.progressView.removeChildView()
+                            self.alert(AlertMessage.networkError)
+                            break
+                        }
+                    }
+                }
+            }else{
+                self.progressView.removeChildView()
+                self.alert("Red no disponible")
+            }
+        }else{
+            //password less than 4 digit
+        }
+    }
+    
+    func getData(authToken:String,signIn:SignInKeyboardModelResponse,_ completion: @escaping ((NetworkResult<GenerateURLModelResponse, ErrorResult>) -> Void)){
+        
+        AccessToken.getacessToken(signIN: signIn){results in
+            switch results{
+                
+            case .success(let data):
+                let generatePayU = GenerateURLServiceRequest.init(deviceId: self.rsaKey!.deviceId, amount:amountPagar,softToken:"eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1ODUwMzcyODYsImhhc2giOiJlYzNlNzI2MTFkMjAwMmFhZGFmZmJjODBlNzcwZGZiYiIsInVzZXJuYW1lIjoiMTIzNDU2Nzg5MDEyMzQ1Njc4OTAifQ.e9VX99uP2p4WJLfln9lE4o_B6XjE4RERg-cXY6GY2hvwlYrGRH00hYbe2LTNKOiY-7n5jO9k2ELCU0NoRB3WLQ")
+                GeneratePaymentURL.getURL(genrateURLSErvice: generatePayU, skk:self.rsaKey?.skk ?? " ", authoriztion: authToken, authToken: data.access_token){ result in
+                    switch result{
+                    case .success(let urldata):
+                        completion(.success(urldata))
+                        break
+                    case .failure(let error):
+                        // printLog(error)
+                        self.progressView.removeChildView()
+                        self.progressView.removeFromSuperview()
+                        self.alert(AlertMessage.networkError)
+                        break
+                    }
+                }
+                
+            case .failure(let error):
+                // printLog(error)
+                self.progressView.removeChildView()
+                self.progressView.removeFromSuperview()
+                self.alert(AlertMessage.networkError)
+                break
+            }
+        }
+    }
+    
+    
+    
+    
+    func alert(_ message: String) {
+        let seconds = 5.0
+        let alerter = ToastAlert()
+        alerter.alert(message: message, in: self.view, withDuration: seconds)
+        DispatchQueue.main.asyncAfter(deadline: .now() + seconds) {
+            self.removeParentView()
+        }
+    }
+    
+    @IBAction func onNumberBtnKeyClick(_ sender: Any) {
+        let button:UIButton = sender as! UIButton
+        printLog(button.tag)
+        UIDevice.current.playInputClick()
+        switch button.tag {
+        case 20:
+            textEntering(numVal: "0")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        case 21:
+            textEntering(numVal: "1")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        case 22:
+            textEntering(numVal: "2")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        case 23:
+            textEntering(numVal: "3")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        case 24:
+            textEntering(numVal: "4")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        case 25:
+            textEntering(numVal: "5")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        case 26:
+            textEntering(numVal: "6")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        case 27:
+            textEntering(numVal: "7")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        case 28:
+            textEntering(numVal: "8")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        case 29:
+            textEntering(numVal: "9")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        case 200:
+            textEntering(numVal: "-")
+            amountTextfield.text = "$" + amount.shownAmount()
+            break
+        default: break
+        }
+    }
+    
+    @IBAction func onPasswordNumBtnKeyClick(_ sender: Any) {
+        let button:UIButton = sender as! UIButton
+        printLog(button.tag)
+        UIDevice.current.playInputClick()
+        switch button.tag {
+        case 30:
+            passwordEntering(numVal: "0")
+            passwordTextfield.text = password
+            break
+        case 31:
+            passwordEntering(numVal: "1")
+            passwordTextfield.text = password
+            break
+        case 32:
+            passwordEntering(numVal: "2")
+            passwordTextfield.text = password
+            break
+        case 33:
+            passwordEntering(numVal: "3")
+            passwordTextfield.text = password
+            break
+        case 34:
+            passwordEntering(numVal: "4")
+            passwordTextfield.text = password
+            break
+        case 35:
+            passwordEntering(numVal: "5")
+            passwordTextfield.text = password
+            break
+        case 36:
+            passwordEntering(numVal: "6")
+            passwordTextfield.text = password
+            break
+        case 37:
+            passwordEntering(numVal: "7")
+            passwordTextfield.text = password
+            break
+        case 38:
+            passwordEntering(numVal: "8")
+            passwordTextfield.text = password
+            break
+        case 39:
+            passwordEntering(numVal: "9")
+            passwordTextfield.text = password
+            break
+        case 300:
+            passwordEntering(numVal: "-")
+            passwordTextfield.text = password
+            break
+        default: break
+            
+        }
+    }
+    
+    //MARK:- textfield delegate
+    func textFieldDidChangeSelection(_ textField: UITextField) {
+        if textField == amountTextfield {
+            printLog("amount:\(String(describing: amountTextfield.text))")
+        }
+    }
+}
+
+// MARK:- UIPickerView Delegate
+
+extension CustomMessageViewController:UIPickerViewDelegate,UIPickerViewDataSource{
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return self.arrofValue?.count ?? 0
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        pickerViewAmount = (self.arrofValue?[row])!
+        amount = pickerViewAmount
+        // self.amountValidation(amount: amount, alertLabel: fixAmountValiationLabel)
+        return self.arrofValue![row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int)
+    {
+        pickerViewAmount = (self.arrofValue?[row])!
+        amount = pickerViewAmount
+        self.amountValidation(amount: amount, alertLabel: fixAmountValiationLabel)
+        // use the row to get the selected row from the picker view
+        // using the row extract the value from your datasource (array[row])
+    }
+    
+    func textEntering(numVal:String)  {
+        let numVal = numVal//action.getNumberString
+        let t0 = Double(amount) ?? 0.0
+        let t1 = Int(t0*100)
+        let t2 = String(t1)
+        if(numVal=="C"){
+            amount = "0.00"
+            self.amountValidation(amount: amount, alertLabel: manualAmountValidationLabel)
+        }else if(numVal=="-"){
+            if(t2.count==1){
+                amount = "0.00"
+            }else if(t2.count>1){
+                let t3 = String(t2)
+                let t4 = t3.dropLast()
+                var t5 = Double(t4) ?? 0.0
+                t5 = t5/100
+                amount = String(t5)
+                let amountPagarArr = amount.components(separatedBy: ".")
+                let afterDecimal: String! = amountPagarArr.count > 1 ? amountPagarArr[1] : nil
+                if(afterDecimal.count==1){
+                    amount = amount + "0"
+                }
+            }
+            self.amountValidation(amount: amount, alertLabel: manualAmountValidationLabel)
+        }else if(t2.count<6){
+            if(amount=="0.00"){
+                amount = "0.0"+numVal
+            }else{
+                var t0 = Double(amount) ?? 0.0
+                t0 = t0 * 100
+                let t1 = Int(t0)
+                let t2 = String(t1)
+                if(t2.count==1){
+                    amount = "0." + t2 + numVal
+                }else if(t2.count>1){
+                    let t3 = t2 + numVal
+                    var t4 = Double(t3) ?? 0.0
+                    t4 = t4/100
+                    amount = String(t4)
+                    let amountPagarArr = amountPagar.components(separatedBy: ".")
+                    let afterDecimal: String  = amountPagarArr.count > 1 ? amountPagarArr[1] : " "
+                    if(afterDecimal.count == 1){
+                        amount = amount + "0"
+                        
+                    }
+                }
+            }
+            printLog("amount: \(amount)")
+            self.amountValidation(amount: amount, alertLabel: manualAmountValidationLabel)
+        }
+    }
+    
+    
+    func amountValidation(amount:String,alertLabel:UILabel) -> Void {
+        let manualAmount:Double = Double(amount) ?? 0.0
+        Amount.minimumAmount = signIn?.body?.infoClient.minAmount ?? 0.0
+        Amount.maximumAmount = signIn?.body?.infoClient.amountAvailable ?? 0.0
+        if manualAmount == 0.0 {
+            alertLabel.isHidden = true
+        }else if (Amount.minimumAmount > Amount.maximumAmount) {
+            alertLabel.text = AlertMessage.amountExceedAlert
+            alertLabel.isHidden = false
+        }else if (Amount.minimumAmount < manualAmount && manualAmount < Amount.maximumAmount)  {
+            alertLabel.isHidden = true
+        }else if(manualAmount <= Amount.minimumAmount){
+            let alertMsg = AlertMessage.minAmountAlert + (String(Amount.minimumAmount)).shownAmount()//String(manualAmount ?? 0.0)
+            alertLabel.text = alertMsg
+            alertLabel.isHidden = false
+        }else if(manualAmount >= Amount.maximumAmount){
+            let alertMsg = AlertMessage.maxAmountAlert + (String(Amount.maximumAmount)).shownAmount()//String(manualAmount ?? 0.0)
+            alertLabel.text = alertMsg
+            alertLabel.isHidden = false
+        }
+        
+    }
+    
+    
+    func passwordEntering(numVal:String)  {
+        
+        let numVal = numVal//action.getNumberString
+        if(numVal=="C"){
+            password.removeAll()
+        }else if(numVal=="-"){
+            if(password.count > 0){
+                _ = password.removeLast()
+                
+            }
+        }else if(passwordTextfield.text?.count == 0){
+            password = "*"
+            
+        }else if(password.count < 4){
+            password = password + "*"
+        }
+    }
+}
+
+
+
+extension String{
+    
+    func shownAmount() -> String {
+        let largeNumber = Double(self) ?? 0.0
+        let numberFormatter = NumberFormatter()
+        numberFormatter.minimumFractionDigits = 2
+        numberFormatter.maximumFractionDigits = 2
+        numberFormatter.numberStyle = .decimal
+        let formattedNumber = numberFormatter.string(from: NSNumber(value:largeNumber))!
+        return String(formattedNumber)
+    }
+}
+
+
+extension CustomMessageViewController{
+    func createLayoutImage()->UIImage?{
+        let size = CGSize(width:self.uiviewForMsg.bounds.width, height: self.uiviewForMsg.bounds.height)
+        UIGraphicsBeginImageContextWithOptions(size, true, 1.0)
+        self.uiviewForMsg.drawHierarchy(in: self.uiviewForMsg.bounds, afterScreenUpdates: true)
+        let image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        return image
+    }
+}
+

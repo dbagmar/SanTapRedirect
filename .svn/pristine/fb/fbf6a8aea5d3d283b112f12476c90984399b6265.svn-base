@@ -1,0 +1,539 @@
+//
+//  TransactionHistoryViewController.swift
+//  Teclado
+//
+//  Created by MCB-Air-036 on 09/04/20.
+//  Copyright © 2020 IDmission. All rights reserved.
+//
+
+import UIKit
+
+class TransactionHistoryViewController: UIViewController,TranscationHistoryDelegate,FSCalendarDataSource, FSCalendarDelegate {
+    
+    @IBOutlet weak var downArrowImageView: UIImageView!
+    @IBOutlet weak var calendarView: FSCalendar!
+    @IBOutlet weak var mainView: UIView!
+    @IBOutlet weak var toolbarButtonStackView: UIStackView!
+    @IBOutlet weak var keyboardButton: UIButton!
+    @IBOutlet weak var backButton: UIButton!
+    @IBOutlet var processBarView: UIView!
+    
+    @IBOutlet weak var monthLabel: UILabel!
+    @IBOutlet weak var pickerView: UIView!
+    @IBOutlet weak var dayPickerView:UIPickerView!
+    
+    @IBOutlet var calendarSuperView: UIView!
+    @IBOutlet var datePickerView: UIDatePicker!
+    
+    @IBOutlet var transactionView: UIView!
+    @IBOutlet var mytableView: UITableView!
+    
+    var buttonView:UIView!
+    weak var delegate:CustomKeyboardDelegate?
+    
+    var daysOfMonthArray : [String]? = []
+    var signIn:SignInKeyboardModelResponse?
+    var rsaKey:RSAEncryptionService?
+    var arrofHistory:[History]? = []
+    var transcationDate:Date?
+    var arrayOfDate:[Date]? = []
+    
+    @IBOutlet var deviceIdLabel: UILabel!
+    deinit {
+        printLog("TransactionHistoryViewController is deallocated")
+    }
+    // MARK:- ViewController Lifecycle
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        keyboardButton.imageView?.contentMode = .center
+        backButton.imageView?.contentMode = .center
+        dayPickerView.dataSource = self
+        dayPickerView.delegate = self
+        dayPickerView.selectRow(0, inComponent: 0, animated: true)
+        pickerView.show()
+        
+        toolbarButtonStackView.removeAllArrangedSubviews()
+        toolbarButtonStackView.addArrangedSubview(buttonView!)
+        
+        self.displayCalenderInSpanishLanguage()
+        self.displayMonth_And_Days()
+        
+        self.addTableView()
+        self.deviceIdLabel.isHidden = false
+        self.deviceIdLabel.text = RandomKey().getDeviceId(length: 10)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        backButton.isUserInteractionEnabled = true
+        toolbarButtonStackView.isUserInteractionEnabled = false
+    }
+    
+    func addTableView() {
+        //
+        mytableView.register(UINib(nibName: "firstTableViewCell", bundle: Bundle(for: firstTableViewCell.self)), forCellReuseIdentifier: "BeneficiaryIdentifier")
+        mytableView.register(UINib(nibName: "secondTableViewCell", bundle: Bundle(for: secondTableViewCell.self)), forCellReuseIdentifier: "NonBeneficiaryIdentifier")
+    }
+    
+    // MARK:- Button Actions
+    func removeLastView() {
+        if(calendarSuperView.subviews.contains(transactionView)){
+            transactionView.removeFromSuperview()
+        }else if(pickerView.subviews.contains(calendarSuperView)){
+            // self.displayMonth_And_Days()
+            calendarSuperView.removeFromSuperview()
+        }else if(pickerView.subviews.contains(transactionView)){
+            transactionView.removeFromSuperview()
+        } else {
+            removeParentView()
+        }
+    }
+    
+    func removeParentView() {
+        clearMemory()
+        self.delegate?.setKeyBoard(keyboardtype: .alphabetic(uppercased: true))
+        self.dismiss(animated: true, completion: nil)
+    }
+    
+    func clearMemory() {
+        
+        datePickerView = nil
+        mytableView = nil
+        buttonView = nil
+        daysOfMonthArray = nil
+        arrofHistory = nil
+        processBarView.removeFromSuperview()
+        calendarSuperView.removeFromSuperview()
+        transactionView.removeFromSuperview()
+        pickerView.removeFromSuperview()
+        self.removeFromParent()
+    }
+    // MARK:- Button Actions
+    
+    @IBAction func onBackBtnClick(_ sender: Any) {
+        UIDevice.current.playInputClick()
+        removeLastView()
+    }
+    
+    @IBAction func onKeyBoardBtnClick(_ sender: Any) {
+        UIDevice.current.playInputClick()
+        removeParentView()
+    }
+    
+    @IBAction func onCalendarBtnClick(_ sender: Any) {
+        UIDevice.current.playInputClick()
+        self.deviceIdLabel.isHidden = true
+        self.downArrowImageView.isHidden = false
+        calendarSuperView.frame = pickerView.bounds
+        pickerView.addSubview(self.calendarSuperView)
+    }
+    
+    @IBAction func onThumpBtnClick(_ sender: Any) {
+        UIDevice.current.playInputClick()
+        let skk:String = RandomKey().generateRandomBytes()! //"VEIjHm4n_eIWk074s4YDCkqcyAq1poYfEaEQZP3X3iEKWwVLQFJ7An_-oVtC2_rhix82mRDfnudXWBtWtuFZI_snZF4Tzt6q"
+        let deviceId:String =  RandomKey().getDeviceId(length: 10)//RandomKey().randomNumString(length: 10)//"1234567890"//
+        rsaKey = RSAEncryptionService.init(deviceId: deviceId, skk: skk)
+        let network = try? Reachability()
+        if (network?.isConnectedToNetwork ?? false) {
+            self.processBarView.frame = self.pickerView.bounds
+            self.pickerView.addSubview(self.processBarView)
+            self.processBarView.showActivityIndicatory()
+            SignIn.signIn(rsaKey: self.rsaKey!){ result in
+                switch result {
+                case .success(let data):
+                    if data.body != nil {
+                        if let authToken = UserDefaults.standard.string(forKey: AuthConstant.authToken){
+                            let startDate = AppUtility.dateToString(mainDate: self.transcationDate!, showDateFormat: "dd/MM/yyyy")
+                            self.getHistoryData(authToken: authToken, signIn: data, startDate: startDate, finishDate:startDate){ result in
+                                switch result{
+                                case .success(let data):
+                                    self.arrofHistory = AppUtility.sortArrayHistory(array: data.body.links)
+                                    //self.view.removeChildView()
+                                    self.processBarView.removeChildView()
+                                    self.processBarView.removeFromSuperview()
+                                    
+                                    if self.arrofHistory!.count > 0 {
+                                        self.mytableView.reloadData()
+                                       self.transactionView.frame = self.pickerView.bounds
+                                       self.pickerView.addSubview(self.transactionView)
+                                    }else{
+                                        self.alert(AlertMessage.noTranscation)
+                                    }
+                                   
+                                    printLog(data)
+                                    break
+                                case .failure(let error):
+                                    printLog(error)
+                                    self.alert(AlertMessage.networkError)
+                                    break
+                                    
+                                }
+                            }
+                            
+                        }
+                    }else{
+                        self.processBarView.removeChildView()
+                        self.processBarView.removeFromSuperview()
+                        self.alert(data.desc)
+                    }
+                    
+                case .failure(let error):
+                    printLog(error)
+                    self.processBarView.removeFromSuperview()
+                    self.alert(AlertMessage.networkError)
+                    break
+                }
+                
+                
+            }
+        }else{
+            self.processBarView.removeFromSuperview()
+            alert("Red no disponible")
+        }
+    }
+    
+    // MARK:- Calendar Date Methods
+    func displayCalenderInSpanishLanguage() {
+        
+        let calendar = Calendar.current
+        var components = calendar.dateComponents([.second, .minute, .hour, .day,.month,.year], from: datePickerView.date)
+        components.day = 0
+        components.month = 0
+        components.year = 0
+        let maxDate = calendar.date(byAdding: components, to: Date())!
+        
+        components.year = -10
+        let minDate = calendar.date(byAdding: components, to: Date())!
+        
+        self.datePickerView.calendar = calendar
+        self.datePickerView.minimumDate = minDate
+        self.datePickerView.maximumDate = maxDate
+        self.datePickerView.locale = Locale(identifier: "es")
+        self.datePickerView.reloadInputViews()
+    }
+    
+    func displayMonth_And_Days() {
+        
+        // Get each Component Of selected Date
+        let calendar = Calendar.current
+        let components = calendar.dateComponents([.second, .minute, .hour, .day,.month,.year], from: datePickerView.date)
+        guard let seconds = components.second, let minutes = components.minute, let hours = components.hour, let days = components.day, let months = components.month, let years = components.year else { return }
+        printLog("TodayDate :", Date())
+        transcationDate = Date()
+        printLog("SlctdDate :", calendar.date(from: components)!)
+        
+        // Get Days Nanme Of Month
+        daysOfMonthArray?.removeAll()
+        
+        let range = calendar.range(of: .day, in: .month, for: datePickerView.date)!
+        for dayCount in 1...range.count {
+            
+            let dayString = String(format: "%02d", dayCount)
+            let components = DateComponents(year: years, month: months, day: Int(dayString), hour: hours, minute: minutes, second: seconds)
+            let arrayDate = calendar.date(from: components)!
+            printLog("arrayDate :", arrayDate)
+            arrayOfDate?.append(arrayDate)
+            // If ArrayDate is Of Today's date then show it as Today
+            var weekdayString = arrayDate.getDayOfWeek()!
+            if arrayDate.getDateWithoutTimeStamp() ==  Date().getDateWithoutTimeStamp() {
+                weekdayString = constantString.Today
+            } else {
+                weekdayString = weekdayString.appending(" ".appending(dayString))
+            }
+            
+            if daysOfMonthArray?.count == 0 {
+                daysOfMonthArray?.insert(weekdayString, at: 0)
+            } else {
+                daysOfMonthArray?.append(weekdayString)
+            }
+        }
+        
+        // If ArrayDate contains Todays then sgow previous Date from todays.
+        var tempArray = [String]()
+        if (daysOfMonthArray?.contains(constantString.Today))! {
+            for day in daysOfMonthArray! {
+                tempArray.append(day)
+                if day == constantString.Today {
+                    break
+                }
+            }
+            daysOfMonthArray = tempArray
+        }
+        
+        // To show previous date below to Today's date then rever the array
+        daysOfMonthArray?.reverse()
+        
+        monthLabel.text = SpanishString(rawValue: datePickerView.date.getMonthOfYear())?.DisplayString
+        dayPickerView.reloadAllComponents()
+        
+        // Focus day Pickerview on selected Date
+        if datePickerView.date.getDateWithoutTimeStamp() == Date().getDateWithoutTimeStamp() {
+            dayPickerView.selectRow(0, inComponent: 0, animated: false)
+        } else {
+            let weekday = datePickerView.date.getDayOfWeek()
+            if let selectedDay = weekday?.appending(" ".appending(String(format: "%02d", days))) {
+                if let indexOfSeleteddate = daysOfMonthArray?.firstIndex(of: selectedDay) {
+                    dayPickerView.selectRow(indexOfSeleteddate, inComponent: 0, animated: false)
+                }
+            }
+        }
+    }
+    
+    
+    
+    
+    func getHistoryData(authToken:String,signIn:SignInKeyboardModelResponse,startDate:String,finishDate:String,_ completion: @escaping ((NetworkResult<PaymentHistoryModelResponse, ErrorResult>) -> Void)){
+        
+        AccessToken.getacessToken(signIN: signIn){results in
+            switch results{
+                
+            case .success(let data):
+                let getHistory = PaymentHistoryServiceRequest.init(deviceId: self.rsaKey!.deviceId, initDate:startDate, finishDate:finishDate)
+                
+                HistoryService.getPaymentHistory(getHistoryService: getHistory, skk: self.rsaKey?.skk ?? " ", authoriztion: authToken, authToken:data.access_token ){result in
+                    
+                    switch result{
+                    case .success(let data):
+                        printLog(data)
+                        completion(.success(data))
+                        break
+                    case .failure(let error):
+                        printLog(error)
+                        completion(.failure(.parser(statusCode: 0, responseMessage: "data parser error")))
+                        break
+                    }
+                }
+            case .failure(let error):
+                printLog(error)
+                completion(.failure(.parser(statusCode: 0, responseMessage: "data parser error")))
+                break
+                
+            }
+        }
+    }
+    
+    func cancelPayment(keyboardtype: KeyboardType) {
+        self.alert(AlertMessage.cancelPayment)
+        self.removeFromParent()
+    }
+    
+    func regenaratePaymentURL(keyboardAction: KeyboardAction, genrateURLModel: GenerateURLModelResponse) {
+        amountPagar = " "
+        self.removeFromParent()
+        self.delegate?.sendAmount(keyboardAction: keyboardAction, genrateURLModel: genrateURLModel, view: self.view)
+    }
+    
+    func startProgessbar(start: Bool) {
+        if start{
+            self.processBarView.frame = CGRect.init(x: 0, y: 0, width: self.pickerView.bounds.width, height: self.pickerView.bounds.height + 10)//self.pickerView.bounds
+            self.pickerView.addSubview(self.processBarView)
+            self.processBarView.showActivityIndicatory()
+        }else{
+            self.processBarView.removeChildView()
+            self.processBarView.removeFromSuperview()
+            mytableView.reloadData()
+        }
+        
+    }
+    
+    func shownError(error: String) {
+        self.alert(error)
+    }
+    
+    func calendar(_ calendar: FSCalendar, didSelect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        print("did date:\(date)")
+    }
+    
+    func calendar(_ calendar: FSCalendar, didDeselect date: Date, at monthPosition: FSCalendarMonthPosition) {
+        
+    }
+    
+    
+    
+    func calendar(_ calendar: FSCalendar, shouldSelect date: Date, at monthPosition: FSCalendarMonthPosition) -> Bool {
+        
+      let currentDate = Date()
+        
+        if date <= currentDate {
+            print("should date:\(date)")
+                let skk:String = RandomKey().generateRandomBytes()! //"VEIjHm4n_eIWk074s4YDCkqcyAq1poYfEaEQZP3X3iEKWwVLQFJ7An_-oVtC2_rhix82mRDfnudXWBtWtuFZI_snZF4Tzt6q"
+                let deviceId:String =  RandomKey().getDeviceId(length: 10)//RandomKey().randomNumString(length: 10)//"1234567890"//
+                rsaKey = RSAEncryptionService.init(deviceId: deviceId, skk: skk)
+                let network = try? Reachability()
+                if (network?.isConnectedToNetwork ?? false) {
+                    //calendarView.removeFromSuperview()
+                    self.downArrowImageView.isHidden = true
+                    self.processBarView.frame = self.calendarSuperView.bounds
+                    self.calendarSuperView.addSubview(self.processBarView)
+                    self.processBarView.showActivityIndicatory()
+                    SignIn.signIn(rsaKey: self.rsaKey!){ result in
+                        switch result {
+                        case .success(let data):
+                            if data.body != nil {
+                                if let authToken = UserDefaults.standard.string(forKey: AuthConstant.authToken){
+                                    self.getHistoryData(authToken: authToken, signIn: data, startDate: AppUtility.dateToString(mainDate: date, showDateFormat: "dd/MM/yyyy"), finishDate:AppUtility.dateToString(mainDate: date, showDateFormat: "dd/MM/yyyy")){ result in
+                                        switch result{
+                                        case .success(let data):
+                                            self.arrofHistory = AppUtility.sortArrayHistory(array: data.body.links)
+                                            //self.view.removeChildView()
+                                            self.processBarView.removeChildView()
+                                            self.processBarView.removeFromSuperview()
+                                            if self.arrofHistory!.count > 0 {
+                                                self.mytableView.reloadData()
+                                               self.transactionView.frame = self.calendarSuperView.bounds
+                                               self.calendarSuperView.addSubview(self.transactionView)
+                                            }else{
+                                                self.alert(AlertMessage.noTranscation)
+                                            }
+                                           
+                                            printLog(data)
+                                            break
+                                        case .failure(let error):
+                                            printLog(error)
+                                            self.processBarView.removeFromSuperview()
+                                            self.alert(AlertMessage.networkError)
+                                            break
+                                            
+                                        }
+                                    }
+                                }
+                            }else{
+                                self.processBarView.removeFromSuperview()
+                                self.alert(data.desc)
+                                break
+                            }
+                            
+                        case .failure(let error):
+                            printLog(error)
+                            self.processBarView.removeFromSuperview()
+                            self.alert(AlertMessage.networkError)
+                            break
+                        }
+                        
+                        
+                    }
+                }else{
+                    self.processBarView.removeFromSuperview()
+                    alert("Red no disponible")
+                }
+                
+                return true
+            }else{
+            printLog("select date less than or equal current date")
+            return false
+        }
+        
+    }
+}
+
+// MARK:- UIPickerView Delegate Method
+
+extension TransactionHistoryViewController:UIPickerViewDelegate,UIPickerViewDataSource{
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return daysOfMonthArray?.count ?? 0
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return getSpanishString(for: (daysOfMonthArray?[row])!)
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        
+        if daysOfMonthArray?[row].lowercased() == "today" {
+            transcationDate = Date()
+        }else{
+            transcationDate = Date().dayBefores(day: row)
+        }
+       
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 35
+    }
+    
+    func getSpanishString(for stringToConvert:String) -> String {
+        
+        var String_To_Return = ""
+        let arrayofStr = stringToConvert.components(separatedBy: " ")
+        if arrayofStr.count == 1 {
+            String_To_Return = SpanishString(rawValue: stringToConvert)!.DisplayString
+        } else {
+            String_To_Return = SpanishString(rawValue: arrayofStr[0])!.DisplayString
+            String_To_Return = String_To_Return.appending(" ".appending(arrayofStr[1]))
+        }
+        
+        return String_To_Return
+    }
+    
+    
+}
+
+// MARK:- UITableView Delegate Method
+
+extension TransactionHistoryViewController : UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.arrofHistory?.count ?? 0
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let history = self.arrofHistory![indexPath.row]
+        var firstTranscation:Bool = false
+        
+        if indexPath.row == 0 {
+            firstTranscation = true
+        }
+        
+        if history.status ==  HistoryStatus.cobrada{
+            let myCell = tableView.dequeueReusableCell(withIdentifier: "BeneficiaryIdentifier", for: indexPath) as! firstTableViewCell
+            return myCell.setData(history: history,status: firstTranscation)
+        } else{
+            let myCell = tableView.dequeueReusableCell(withIdentifier: "NonBeneficiaryIdentifier", for: indexPath) as! secondTableViewCell
+            myCell.delegate = self
+            myCell.rsaKey = rsaKey
+            return myCell.setData(history: history,status: firstTranscation)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 158
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        UIDevice.current.playInputClick()
+    }
+    
+    func alert(_ message: String) {
+        let seconds = 5.0
+        let alerter = ToastAlert()
+        alerter.alert(message: message, in: self.view, withDuration: seconds)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
+            self.removeParentView()
+        }
+    }
+}
+
+// MARK:- Date() extension Method
+extension Date {
+    func getDayOfWeek() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        return dateFormatter.string(from: self).capitalized
+    }
+    
+    func getMonthOfYear() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MMMM"
+        return dateFormatter.string(from: self).capitalized
+    }
+    
+    func getDateWithoutTimeStamp() -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "YYYY-MM-dd"
+        return dateFormatter.string(from: self).capitalized
+    }
+}

@@ -1,0 +1,6 @@
+framework module Pods_SanTapApp {
+  umbrella header "Pods-SanTapApp-umbrella.h"
+
+  export *
+  module * { export * }
+}

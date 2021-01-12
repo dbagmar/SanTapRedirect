@@ -1,0 +1,21 @@
+PODS:
+  - SantanderTapKeyboardPod (1.0.78)
+  - SantanderTapPod (1.0.78)
+
+DEPENDENCIES:
+  - SantanderTapKeyboardPod (from `../SantanderTapKeyboardPod`)
+  - SantanderTapPod (from `../SantanderTapPod`)
+
+EXTERNAL SOURCES:
+  SantanderTapKeyboardPod:
+    :path: "../SantanderTapKeyboardPod"
+  SantanderTapPod:
+    :path: "../SantanderTapPod"
+
+SPEC CHECKSUMS:
+  SantanderTapKeyboardPod: e855da82068b1c976c1846da488c03325d904788
+  SantanderTapPod: cf053ea27d98a0512e30d08c761e76b4368e4347
+
+PODFILE CHECKSUM: ec596f9ce6fbccf03bc8ee7c1851535e6735a8cc
+
+COCOAPODS: 1.9.1

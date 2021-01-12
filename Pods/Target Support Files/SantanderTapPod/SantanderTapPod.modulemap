@@ -1,0 +1,6 @@
+framework module SantanderTapPod {
+  umbrella header "SantanderTapPod-umbrella.h"
+
+  export *
+  module * { export * }
+}
