@@ -1,0 +1,361 @@
+//
+//  DemoButton.swift
+//  KeyboardKitExampleKeyboard
+//
+//  Created by Daniel Saidi on 2019-04-30.
+//  Copyright © 2019 Daniel Saidi. All rights reserved.
+//
+
+/*
+ 
+ This demo-specific button view represents a keyboard button
+ like the one used in the iOS system keyboard. The file also
+ contains a set of extensions for `KeyboardAction` that only
+ applies to this button type.
+ 
+ */
+
+import UIKit
+//import KeyboardKit
+
+class DemoButton: KeyboardButtonView {
+    
+    var flag:Bool?
+    var keyboardType:KeyboardType?
+    
+    @IBOutlet weak var leadingConstant: NSLayoutConstraint!
+    @IBOutlet weak var trailingConstant: NSLayoutConstraint!
+   
+   
+    public func setup(with action: KeyboardAction, in viewController: KeyboardInputViewController, distribution: UIStackView.Distribution = .fillEqually) {
+        super.setup(with: action, in: viewController)
+        backgroundColor = .clearTappable
+        leadingConstant.constant = 10
+        trailingConstant.constant = 10
+        DispatchQueue.main.async { self.image?.image = action.buttonImage }
+        textLabel?.font = action.buttonFont
+        textLabel?.text = action.buttonText
+        textLabel?.textColor = action.tintColor(in: viewController)
+        buttonView?.tintColor = action.tintColor(in: viewController)
+        width = action.buttonWidth(for: distribution)
+        
+        
+        
+        if flag ?? true {
+            applyShadow(.standardButtonShadow)
+            buttonView?.layer.cornerRadius = 30
+            buttonView?.backgroundColor = .clear
+        }else{
+            buttonView?.layer.cornerRadius = 5
+            buttonView?.layer.shadowColor = UIColor.gray.cgColor
+            buttonView?.layer.shadowOffset = CGSize(width: 0.0, height: 1.0)
+            buttonView?.layer.shadowOpacity = 1.0
+            buttonView?.layer.shadowRadius = 0.0
+            buttonView?.layer.masksToBounds = false
+            
+            switch action {
+            case .shiftDown:
+                buttonView?.backgroundColor = action.buttonColor(for: viewController)
+                //textLabel?.backgroundColor = .black
+                break
+            case .shift:
+                buttonView?.backgroundColor = Asset.Colors.lightSystemButton.color
+                break
+            default:
+                buttonView?.backgroundColor = action.buttonColor(for: viewController)
+            }
+        }
+        
+    }
+    
+    
+    public func setupCollection(with action: KeyboardAction, in viewController: KeyboardInputViewController, distribution: UIStackView.Distribution = .fillEqually) {
+        super.setup(with: action, in: viewController)
+        backgroundColor = .clearTappable
+        
+        leadingConstant.constant = 0
+        trailingConstant.constant = 0
+        
+        DispatchQueue.main.async { self.image?.image = action.buttonImage }
+        textLabel?.font = action.buttonFont
+        textLabel?.text = action.buttonText
+        textLabel?.textColor = .red//action.tintColor(in: viewController)
+        buttonView?.tintColor = action.tintColor(in: viewController)
+        width = action.buttonWidth(for: distribution)
+        
+        switch action.getImageDescription {
+        case "app":
+                    buttonView?.backgroundColor = .red
+                    buttonView?.clipsToBounds = true
+                    buttonView?.layer.cornerRadius = 10
+                    buttonView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+                    break
+            
+            
+        case "appRed":
+        buttonView?.backgroundColor = .white
+        buttonView?.clipsToBounds = true
+        buttonView?.layer.cornerRadius = 10
+        buttonView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        break
+            
+        case "enviarSelected":
+                       buttonView?.backgroundColor = .red
+                     //  buttonView?.backgroundColor = action.buttonColor(for: viewController)
+                       buttonView?.clipsToBounds = true
+                       buttonView?.layer.cornerRadius = 10
+                       buttonView?.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+                       break
+            
+        case "enviarUnselected":
+                     buttonView?.backgroundColor = .white
+                   // buttonView?.backgroundColor = action.buttonColor(for: viewController)
+                    buttonView?.clipsToBounds = true
+                    buttonView?.layer.cornerRadius = 10
+                    buttonView?.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+                    break
+        
+        case "BackArrow":
+                        if keyboardType == KeyboardType.dyanamicValue {
+                           buttonView?.backgroundColor = .clear
+                           buttonView?.isHidden = false
+                       }else{
+                           buttonView?.backgroundColor = .clear
+                           buttonView?.isHidden = true
+                       }
+                        break
+            
+        case "Keyboard":
+                        if keyboardType == KeyboardType.dyanamicValue {
+                            buttonView?.backgroundColor = .clear
+                            buttonView?.isHidden = false
+                        }else{
+                            buttonView?.backgroundColor = .clear
+                            buttonView?.isHidden = true
+                        }
+                         break
+           
+        
+        case "BackArrowCircle":
+                        if keyboardType == KeyboardType.dyanamicValue {
+                            buttonView?.backgroundColor = .clear
+                            buttonView?.isHidden = false
+                        }else{
+                            buttonView?.backgroundColor = .clear
+                            buttonView?.isHidden = true
+                        }
+                         break
+           
+            
+        case "KeyboardWork":
+                        if keyboardType == KeyboardType.dyanamicValue {
+                            buttonView?.backgroundColor = .clear
+                            buttonView?.isHidden = false
+                        }else{
+                            buttonView?.backgroundColor = .clear
+                            buttonView?.isHidden = true
+                        }
+                         break
+        default:
+            buttonView?.backgroundColor = action.buttonColor(for: viewController)
+        }
+        
+        /*
+        if (action.getImageDescription == "app") {
+            buttonView?.backgroundColor = .red
+            buttonView?.clipsToBounds = true
+            buttonView?.layer.cornerRadius = 10
+            buttonView?.layer.maskedCorners = [.layerMinXMinYCorner, .layerMinXMaxYCorner]
+        }else if(action.getImageDescription == "enviarSelected" || action.getImageDescription == "enviarUnselected"){
+            buttonView?.backgroundColor = action.buttonColor(for: viewController)
+            buttonView?.clipsToBounds = true
+            buttonView?.layer.cornerRadius = 10
+            buttonView?.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMaxXMinYCorner]
+        }else if(action.getImageDescription == "BackArrow" || action.getImageDescription == "Keyboard" || action.getImageDescription == "BackArrowCircle" || action.getImageDescription == "KeyboardWork"){
+            if keyboardType == KeyboardType.dyanamicValue {
+                buttonView?.backgroundColor = .clear
+                buttonView?.isHidden = false
+            }else{
+                buttonView?.backgroundColor = .clear
+                buttonView?.isHidden = true
+            }
+            
+        }else{
+            buttonView?.backgroundColor = action.buttonColor(for: viewController)
+        }*/
+        
+        
+        
+    }
+    
+    public func setupChar(with action: KeyboardAction, in viewController: KeyboardInputViewController, distribution: UIStackView.Distribution = .fill) {
+        super.setup(with: action, in: viewController)
+        backgroundColor = .clearTappable
+        
+        leadingConstant.constant = 10
+        trailingConstant.constant = 10
+        
+        DispatchQueue.main.async { self.image?.image = UIImage.setImageFromBundle(name: "stap_09")! }
+        textLabel?.font = action.buttonFont
+        //textLabel?.text = action.buttonText
+        //textLabel?.textColor = action.tintColor(in: viewController)
+        buttonView?.tintColor = action.tintColor(in: viewController)
+        width = action.buttonWidth(for: distribution)
+        
+        if flag ?? true {
+            applyShadow(.standardButtonShadow)
+        
+            buttonView?.backgroundColor = .clear
+        }else{
+            
+            buttonView?.backgroundColor = action.buttonColor(for: viewController)
+        }
+        
+    }
+    
+    @IBOutlet weak var buttonView: UIView? {
+        didSet {
+            
+            
+              //  buttonView?.clipsToBounds = true
+               // buttonView?.layer.cornerRadius = 7
+               // buttonView?.layer.maskedCorners = [.layerMaxXMinYCorner,.layerMaxXMaxYCorner,.layerMinXMaxYCorner,.layerMinXMinYCorner]
+            
+            
+        }
+    }
+    
+    
+    
+    
+    @IBOutlet weak var image: UIImageView?
+    
+    @IBOutlet weak var textLabel: UILabel? {
+        didSet { textLabel?.text = "" }
+    }
+}
+
+
+
+
+// MARK: - Private button-specific KeyboardAction Extensions
+
+private extension KeyboardAction {
+    
+    func buttonColor(for viewController: KeyboardInputViewController) -> UIColor {
+        let dark = useDarkAppearance(in: viewController)
+        var asset = useDarkButton
+            ? (dark ? Asset.Colors.lightSystemButton : Asset.Colors.lightSystemButton)
+            : (dark ? Asset.Colors.darkButton : Asset.Colors.lightButton)
+        if(isAppButton){
+            asset = Asset.Colors.redButton
+        }
+        return asset.color
+    }
+    
+    var buttonFont: UIFont {
+        return .preferredFont(forTextStyle: buttonFontStyle)
+    }
+    
+    var buttonFontStyle: UIFont.TextStyle {
+        switch self {
+        case .character: return .title2
+        case .shift, .shiftDown, .backspace: return .title1
+        case .switchToKeyboard(.emojis): return .title1
+        default: return .body
+        }
+    }
+    
+    var buttonImage: UIImage? {
+        switch self {
+        case .image(_, let imageName, _): return UIImage.setImageFromBundle(name: imageName)
+        case .shiftDown:
+            
+            if UserDefaults.standard.bool(forKey: KeyBoardKeys.capsLocked){
+                return UIImage.setImageFromBundle(name: "stap_ShiftOnContinuos")!//UIImage(named: "ShiftOnContinuos")
+            }else{
+                return UIImage.setImageFromBundle(name: "stap_ShiftOn")!//UIImage(named: "ShiftOn")
+            }
+        case .switchKeyboard: return Asset.Images.Buttons.switchKeyboard.image
+        default: return nil
+        }
+    }
+    
+    var buttonText: String? {
+        switch self {
+        case .backspace: return "⌫"
+        case .character(let text): return text
+        case .newLine: return "intro"
+        case .shift: return "⇧"
+        case .space: return "espacio"
+        case .switchToKeyboard(let type): return buttonText(for: type)
+        default: return nil
+        }
+    }
+    
+    func buttonText(for keyboardType: KeyboardType) -> String {
+        switch keyboardType {
+        case .alphabetic: return "ABC"
+        case .emojis: return "🙂"
+        case .images: return "Pay"
+        case .numeric: return "123"
+        case .symbolic: return "#+="
+        default: return "???"
+        }
+    }
+    
+    var buttonWidth: CGFloat {
+        switch self {
+        case .none: return 10
+        case .shift, .shiftDown, .backspace: return 70
+        case .space: return 100
+        default: return 50
+        }
+    }
+    
+    func buttonWidth(for distribution: UIStackView.Distribution) -> CGFloat {
+        let adjust = distribution == .fillProportionally
+        return adjust ? buttonWidth * 100 : buttonWidth
+    }
+    
+    func tintColor(in viewController: KeyboardInputViewController) -> UIColor {
+        let dark = useDarkAppearance(in: viewController)
+        let asset = useDarkButton
+            ? (dark ? Asset.Colors.darkSystemButtonText : Asset.Colors.lightSystemButtonText)
+            : (dark ? Asset.Colors.darkButtonText : Asset.Colors.lightButtonText)
+        return asset.color
+    }
+    
+    func useDarkAppearance(in viewController: KeyboardInputViewController) -> Bool {
+        let appearance = viewController.textDocumentProxy.keyboardAppearance ?? .default
+//        return appearance == .dark
+        return appearance == .light
+    }
+    
+    var useDarkButton: Bool {
+        switch self {
+//        case .character, .image, .shiftDown, .space: return false
+        default: return false
+        }
+    }
+    
+    var isAppButton: Bool {
+        switch self {
+        case .image: if(self.getImageDescription == "app"){ return true } else { return false }
+        default: return false
+        }
+    }
+}
+
+
+extension UIView{
+    func roundedButton(){
+        let maskPath1 = UIBezierPath(roundedRect: bounds,
+                                     byRoundingCorners: [.topLeft,.bottomLeft],
+            cornerRadii: CGSize(width: 8, height: 8))
+        let maskLayer1 = CAShapeLayer()
+        maskLayer1.frame = bounds
+        maskLayer1.path = maskPath1.cgPath
+        layer.mask = maskLayer1
+    }
+}

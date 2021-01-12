@@ -1,0 +1,75 @@
+//
+//  AlphabeticKeyboard.swift
+//
+
+/**
+ This demo keyboard mimicks an English alphabetic keyboard.
+ */
+struct AlphabeticKeyboard: DemoKeyboard {
+    
+    init(uppercased: Bool, in viewController: KeyboardParentViewController) {
+        actions = AlphabeticKeyboard.actions(
+            uppercased: uppercased,
+            in: viewController)
+    }
+
+    let actions: KeyboardActionRows
+    
+    let actio: [KeyboardAction] = [
+        .image(description: "BackArrow", keyboardImageName: "stap_BackArrow", imageName: "stap_BackArrow"),
+        .image(description: "appRed", keyboardImageName: "stap_appRed", imageName: "stap_appRed"),
+        .image(description: "enviarUnselected", keyboardImageName: "stap_enviarUnselected", imageName: "stap_enviarUnselected"),
+        //.image(description: "servicios", keyboardImageName: "Servicess", imageName: "Servicess"),
+        //.image(description: "atm", keyboardImageName: "ATMs", imageName: "ATMs"),
+        .image(description: "Keyboard", keyboardImageName: "stap_Keyboard", imageName: "stap_Keyboard"),
+    ]
+    
+    let alertAction: [KeyboardAction] = [
+               .character("www.santander.com.mx"),
+               .character("¿Qué es Santander TAP?"),
+               .character("Tutorial iOS"),
+               .character("Tutorial Android"),
+               .character("Historial"),
+               .character("Contáctanos")
+               //.character("Buscar") commit
+           ]
+       
+}
+
+extension AlphabeticKeyboard {
+    
+    static func actions(
+        uppercased: Bool,
+        in viewController: KeyboardParentViewController) -> KeyboardActionRows {
+        KeyboardActionRows
+            .from(characters(uppercased: uppercased))
+            .addingSideActions(uppercased: uppercased)
+            .appending(bottomActions(leftmost: switchAction, for: viewController))
+    }
+    
+    static let characters: [[String]] = [
+        ["q", "w", "e", "r", "t", "y", "u", "i", "o", "p"],
+        ["a", "s", "d", "f", "g", "h", "j", "k", "l", "ñ"],
+        ["z", "x", "c", "v", "b", "n", "m"]
+    ]
+    
+    static func characters(uppercased: Bool) -> [[String]] {
+        uppercased ? characters.uppercased() : characters
+    }
+    
+    static var switchAction: KeyboardAction {
+        .switchToKeyboard(.numeric)
+    }
+}
+
+private extension Sequence where Iterator.Element == KeyboardActionRow {
+    
+    func addingSideActions(uppercased: Bool) -> [Iterator.Element] {
+        var result = map { $0 }
+        result[2].insert(uppercased ? .shiftDown : .shift, at: 0)
+        result[2].insert(.none, at: 1)
+        result[2].append(.none)
+        result[2].append(.backspace)
+        return result
+    }
+}

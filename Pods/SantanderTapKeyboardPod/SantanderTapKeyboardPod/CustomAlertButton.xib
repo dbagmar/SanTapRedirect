@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="stap_SantanderText-Regular.ttf">
+            <string>SantanderText-Regular</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="CustomAlertButton" customModule="SantanderTapKeyboardPod" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="492" height="317"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z9r-I5-MFP">
+                    <rect key="frame" x="3" y="44" width="486" height="238"/>
+                    <subviews>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="t8Q-Sc-0n3">
+                            <rect key="frame" x="481" y="-10" width="5" height="258"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="5" id="ZHh-I6-tBI"/>
+                            </constraints>
+                        </view>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wMu-at-JCh">
+                            <rect key="frame" x="0.0" y="-10" width="20" height="258"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="G3H-SY-DKl"/>
+                            </constraints>
+                        </view>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="magnifyingglass" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="vNB-rV-uwy">
+                            <rect key="frame" x="3" y="110" width="20" height="18"/>
+                            <color key="tintColor" name="darkButton"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="20" id="VJ8-Bj-ycm"/>
+                                <constraint firstAttribute="height" constant="20" id="u5N-0A-ypQ"/>
+                            </constraints>
+                        </imageView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="SBA-xc-fVt">
+                            <rect key="frame" x="451" y="111.5" width="15" height="15"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="15" id="Qgl-SO-v3E"/>
+                                <constraint firstAttribute="width" constant="15" id="Wwd-RM-HVx"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="owK-57-RLM">
+                            <rect key="frame" x="28" y="104" width="418" height="30"/>
+                            <color key="tintColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="h9w-Ou-k9u"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="SantanderText-Regular" family="Santander Text" pointSize="14"/>
+                            <color key="textColor" red="0.54117647059999996" green="0.5568627451" blue="0.58039215690000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="owK-57-RLM" firstAttribute="centerY" secondItem="z9r-I5-MFP" secondAttribute="centerY" id="1Pd-Rp-7q6"/>
+                        <constraint firstItem="t8Q-Sc-0n3" firstAttribute="top" secondItem="z9r-I5-MFP" secondAttribute="top" constant="-10" id="2cu-kz-N4A"/>
+                        <constraint firstAttribute="trailing" secondItem="t8Q-Sc-0n3" secondAttribute="trailing" id="7Uz-NZ-XqD"/>
+                        <constraint firstAttribute="trailing" secondItem="SBA-xc-fVt" secondAttribute="trailing" constant="20" id="IoZ-Y0-OmU"/>
+                        <constraint firstItem="SBA-xc-fVt" firstAttribute="centerY" secondItem="z9r-I5-MFP" secondAttribute="centerY" id="K0Y-5r-2MA"/>
+                        <constraint firstItem="vNB-rV-uwy" firstAttribute="leading" secondItem="z9r-I5-MFP" secondAttribute="leading" constant="3" id="Qwi-p9-Qi7"/>
+                        <constraint firstItem="SBA-xc-fVt" firstAttribute="leading" secondItem="owK-57-RLM" secondAttribute="trailing" constant="5" id="S5B-tw-JFC"/>
+                        <constraint firstAttribute="bottom" secondItem="wMu-at-JCh" secondAttribute="bottom" constant="-10" id="SA3-a6-Mtf"/>
+                        <constraint firstItem="vNB-rV-uwy" firstAttribute="centerY" secondItem="z9r-I5-MFP" secondAttribute="centerY" id="Tbf-Pa-KPj"/>
+                        <constraint firstItem="wMu-at-JCh" firstAttribute="top" secondItem="z9r-I5-MFP" secondAttribute="top" constant="-10" id="WHO-yF-i5e"/>
+                        <constraint firstItem="owK-57-RLM" firstAttribute="leading" secondItem="vNB-rV-uwy" secondAttribute="trailing" constant="5" id="pAH-73-WSI"/>
+                        <constraint firstAttribute="bottom" secondItem="t8Q-Sc-0n3" secondAttribute="bottom" constant="-10" id="vMi-Ma-afB"/>
+                        <constraint firstItem="wMu-at-JCh" firstAttribute="leading" secondItem="z9r-I5-MFP" secondAttribute="leading" id="zLX-sn-Hh4"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="z9r-I5-MFP" secondAttribute="trailing" constant="3" id="Oco-Of-RrG"/>
+                <constraint firstItem="z9r-I5-MFP" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="nwf-YJ-rqc"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="bottom" secondItem="z9r-I5-MFP" secondAttribute="bottom" constant="1" id="rMp-TO-oOO"/>
+                <constraint firstItem="z9r-I5-MFP" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="3" id="zcO-vp-PPp"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
+            <connections>
+                <outlet property="buttonView" destination="z9r-I5-MFP" id="WK8-uu-31L"/>
+                <outlet property="leadingImageView" destination="SBA-xc-fVt" id="UFe-8T-RyR"/>
+                <outlet property="textLabel" destination="owK-57-RLM" id="022-dg-4NB"/>
+                <outlet property="trailingImageView" destination="vNB-rV-uwy" id="9Pc-tg-BcM"/>
+            </connections>
+            <point key="canvasLocation" x="194.20289855072465" y="-93.415178571428569"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <namedColor name="darkButton">
+            <color red="0.54117647058823526" green="0.54117647058823526" blue="0.54117647058823526" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+    </resources>
+</document>

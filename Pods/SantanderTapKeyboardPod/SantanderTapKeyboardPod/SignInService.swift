@@ -1,0 +1,109 @@
+//
+//  SignInService.swift
+//  Teclado
+//
+//  Created by Darshan Bagmar on 13/04/20.
+//  Copyright © 2020 IDmission. All rights reserved.
+//
+
+import Foundation
+
+
+class SignIn{
+    
+    
+    
+    static func signIn(rsaKey:RSAEncryptionService,_ completion: @escaping ((NetworkResult<SignInKeyboardModelResponse, ErrorResult>) -> Void)){
+     
+        let datadict:Dictionary<String,String> = ["deviceId":rsaKey.deviceId,"skk":rsaKey.skk]
+        
+        let jsonString = datadict.jsonRepresentation()
+        
+        URLKey.getURLKey(){PublicKeyResult in
+                          switch PublicKeyResult{
+                          case.success(let data):
+                           let defaults = UserDefaults.standard
+                           defaults.set(data.keySslPinning, forKey: SSLPinKey)
+                           PublicKey.getPublicKey(){PublicKeyResult in
+                                      switch PublicKeyResult{
+                                      case.success(let data):
+                                          let encryptData = RSA.encrypt(string: jsonString, publicKey: data.Data)
+                                          let signServiceKey = SignInKeyboardsServiceRequest.init(data: encryptData!)
+                                                 self.SignInKeyboardServiceRequest(Data:signServiceKey, SKK: rsaKey.skk){signInResult in
+                                                 switch signInResult{
+                                                 case .success(let signInData):
+                                                             completion(.success(signInData))
+                                                             break
+                                                 case .failure(let error):
+                                                             printLog(error)
+                                                             completion(.failure(.parser(statusCode: 0, responseMessage: "data parser error")))
+                                                             break
+                                                 }
+                                                 }
+                                      case .failure(let error):
+                                          completion(.failure(.parser(statusCode: 0, responseMessage: "data parser error")))
+                                          printLog(error)
+                                          break
+                                      }
+                                  }
+                          case .failure(let error):
+                            completion(.failure(.parser(statusCode: 0, responseMessage: "data parser error")))
+                              printLog(error)
+                              break
+                          }
+                      }
+        
+       
+        
+       
+        
+        
+    }
+    
+    
+    
+    static func SignInKeyboardServiceRequest(Data:SignInKeyboardsServiceRequest,SKK:String,_ completion: @escaping ((NetworkResult<SignInKeyboardModelResponse, ErrorResult>) -> Void))
+    {
+     
+        
+        let entityUrl:String = MAIN_URL + "security/sing_in_keyboard"
+    
+        let httpHeader:[String:String] = ["T-Location":device.location,
+                                          "T-Device-Model":device.deviceName,
+                                          "T-Os":device.systemVersion,"T-Os-Version":device.iOS]
+        
+        networkRequestWith(entity: entityUrl, action: POST_ACTION, queryParameters: nil,reqBody: Data.data, httpHeaders: httpHeader,isTokenRequired: false) { dataResult in
+            
+            switch dataResult {
+                
+            case .success(let data) :
+                
+                
+                let results = String(data: data, encoding: .utf8) ?? ""
+                
+                let decodedString = AESEncryptionss.AesDecrypt(skkStr: SKK, encodesString:results)
+                
+                if let decodedData = try? JSONDecoder().decode([SignInKeyboardModelResponse].self, from: decodedString.data(using: .utf8)!)
+                {
+                    completion(.success(decodedData.first!))
+                    break
+                }else{
+                    
+                    completion(.failure(.parser(statusCode: 0, responseMessage: "sign in data not found")))
+                    break
+                }
+                
+                
+            case .failure(let error) :
+                printLog("Network error \(error)")
+                completion(.failure(.parser(statusCode: 0, responseMessage: "data parser error")))
+                break
+            }
+            
+        }
+        
+    }
+
+    
+    
+}
